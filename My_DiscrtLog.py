@@ -1,4 +1,5 @@
 # This Python file uses the following encoding: windows-1251
+
 from math import sqrt, ceil
 from functools import reduce
 from typing import List

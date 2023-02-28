@@ -13,7 +13,7 @@ def get_task_val():
     v_tsk_m = elg.get_random_message(6)
     return v_tsk_p,v_tsk_g,v_tsk_x,v_tsk_m
 
-class MainWindow(QWidget):
+class Window_1_1(QWidget):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -26,14 +26,13 @@ class MainWindow(QWidget):
 
         # create a tab widget
         tab = QTabWidget(self)
-        tab.setFont(QFont('Arial', 12))
+        tab.setFont(QFont('Arial', 14))
         # Page Theory
         page_text = QWidget(self)
         layout = QFormLayout()
         page_text.setLayout(layout)
         text = read_text('text_mod1_block1.html')
         label_text = QLabel(text)
-        label_text.setFont(QFont('Arial', 12))
         label_text.setWordWrap(True)
         scrollArea = QScrollArea()
         scrollArea.setWidget(label_text)
@@ -128,7 +127,7 @@ class MainWindow(QWidget):
             print(ValueError)
 
 
-if __name__ == '__main__':
-    app = QApplication(sys.argv)
-    window = MainWindow()
-    sys.exit(app.exec())
+def win_1_1(w):
+
+    w.window = Window_1_1()
+    w.window.show()

@@ -1,4 +1,5 @@
 # This Python file uses the following encoding: windows-1251
+
 import string
 
 def knapSack_loop(W, S, result):

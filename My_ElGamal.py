@@ -1,4 +1,5 @@
 # This Python file uses the following encoding: windows-1251
+
 from typing import Tuple, List
 from random import randint, choice
 from math import gcd
