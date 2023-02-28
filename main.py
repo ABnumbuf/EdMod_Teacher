@@ -6,9 +6,7 @@ from PyQt5.QtGui import *
 from PyQt5 import QtCore
 from util import read_text
 import mod_1_sub_1, mod_1_sub_2, mod_1_sub_3 \
-    , mod_2_sub_1 
-    # , mod_2_sub_2 \ 
-    # , mod_2_sub_3 \
+    , mod_2_sub_1 , mod_2_sub_2, mod_2_sub_3
     # , mod_3_sub_1 \
     # , mod_3_sub_2 \
     # , mod_3_sub_3
@@ -32,22 +30,17 @@ class MainWindow(QWidget):
         super().__init__(*args, **kwargs)
 
         self.setWindowTitle('EdMod')
-        self.setFixedSize(700, 300)
+        self.setFixedSize(725, 300)
+        self.setFont(QFont('Arial', 14))
         qr = self.frameGeometry()
         cp = QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
-
         main_layout = QGridLayout(self)
         self.setLayout(main_layout)
-
-        # create a tab widget
         tab = QWidget(self)
-        tab.setFont(QFont('Arial', 14))
-
         layout = QFormLayout()
         tab.setLayout(layout)
-
         lb1 = QLabel("EdMod")
         lb2 = QLabel("Криптографические методы")
         lb3 = QLabel("Выбери раздел")
@@ -62,7 +55,7 @@ class MainWindow(QWidget):
 
         self.cmb = QComboBox()
         self.cmb.addItems(mods)
-        self.cmb.setFixedSize(550,29)
+        self.cmb.setFixedSize(575,29)
 
 
         self.btn = QPushButton("Далее")
@@ -90,8 +83,8 @@ class MainWindow(QWidget):
                 elif choosed == sub_1[1]: mod_1_sub_2.win_1_2(self)
                 elif choosed == sub_1[2]: mod_1_sub_3.win_1_3(self)
                 elif choosed == sub_2[0]: mod_2_sub_1.win_2_1(self)
-                # elif choosed == sub_2[1]: mod_2_sub_2.win_2_2(self)
-                # elif choosed == sub_2[2]: mod_2_sub_3.win_2_3(self)
+                elif choosed == sub_2[1]: mod_2_sub_2.win_2_2(self)
+                elif choosed == sub_2[2]: mod_2_sub_3.win_2_3(self)
                 # elif choosed == sub_3[0]: mod_3_sub_1.win_3_1(self)
                 # elif choosed == sub_3[1]: mod_3_sub_2.win_3_2(self)
                 # elif choosed == sub_3[2]: mod_3_sub_3.win_3_3(self)

@@ -1,3 +1,4 @@
+# This Python file uses the following encoding: windows-1251
 
 from PyQt5.QtWidgets import * 
 from PyQt5.QtGui import *

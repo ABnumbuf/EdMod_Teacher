@@ -22,16 +22,13 @@ class Window_1_3(QWidget):
         super().__init__(*args, **kwargs)
 
         self.setWindowTitle('ЭЦП по схеме Эль-Гамаля: Валидация подписи')
-        self.setFixedSize(700,800)
+        self.setFixedSize(700, 800)
         qr = self.frameGeometry()
         cp = QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
-
         main_layout = QGridLayout(self)
         self.setLayout(main_layout)
-
-        # create a tab widget
         tab = QTabWidget(self)
         tab.setFont(QFont('Arial', 14))
         # Page Theory
@@ -59,12 +56,12 @@ class Window_1_3(QWidget):
         btn_ex = QPushButton("Решить")
         btn_ex.clicked.connect(self.click_btn_ex)
         self.outp_ex = QTextBrowser()
-        self.inp_ex_m.setFixedSize(620,20)
-        self.inp_ex_p.setFixedSize(620,20)
-        self.inp_ex_g.setFixedSize(620,20)
-        self.inp_ex_y.setFixedSize(620,20)
-        self.inp_ex_r.setFixedSize(620,20)
-        self.inp_ex_s.setFixedSize(620,20)
+        self.inp_ex_m.setFixedSize(620, 20)
+        self.inp_ex_p.setFixedSize(620, 20)
+        self.inp_ex_g.setFixedSize(620, 20)
+        self.inp_ex_y.setFixedSize(620, 20)
+        self.inp_ex_r.setFixedSize(620, 20)
+        self.inp_ex_s.setFixedSize(620, 20)
         layout_ex.addRow(QLabel('m = '), self.inp_ex_m)
         layout_ex.addRow(QLabel('p = '), self.inp_ex_p)
         layout_ex.addRow(QLabel('g = '), self.inp_ex_g)
@@ -72,7 +69,7 @@ class Window_1_3(QWidget):
         layout_ex.addRow(QLabel('r = '), self.inp_ex_r)
         layout_ex.addRow(QLabel('s = '), self.inp_ex_s)
         layout_ex.addRow(btn_ex)
-        layout_ex.addRow(QLabel('Вывод:'))
+        layout_ex.addRow(QLabel('Результат:'))
         layout_ex.addRow(self.outp_ex)
         # Page Task
         page_task = QWidget(self)
@@ -83,7 +80,7 @@ class Window_1_3(QWidget):
         self.task_text = QLabel(
             f'Являеется ли подпись правильной для: \np = {self.v_tsk_p}, g = {self.v_tsk_g}, y = {self.v_tsk_y}, \nm = {self.v_tsk_m}, \nr = {self.v_tsk_r}, s = {self.v_tsk_s}')
         self.task_text.setAlignment(QtCore.Qt.AlignCenter)
-        self.task_text.setFixedSize(620,160)
+        self.task_text.setFixedSize(620, 160)
         self.inp_tsk = QComboBox()
         self.inp_tsk.addItems(['Подпись подлина', 'Подпись подделана'])
         btn_tsk_chk = QPushButton("Проверить")
@@ -91,16 +88,13 @@ class Window_1_3(QWidget):
         self.outp_tsk = QTextBrowser()
         btn_tsk_chk.clicked.connect(self.click_btn_tsk_chk)
         btn_tsk_rst.clicked.connect(self.click_btn_tsk_rst)
-
         layout_tsk.addRow(self.task_text)
-
         layout_tsk.addRow(QLabel('Выбери:'), self.inp_tsk)
         layout_tsk.addRow(btn_tsk_chk)
         layout_tsk.addRow(btn_tsk_rst)
-        layout_tsk.addRow(QLabel('Вывод:'))
+        layout_tsk.addRow(QLabel('Результат:'))
         layout_tsk.addRow(self.outp_tsk)
 
-        # add pane to the tab widget
         tab.addTab(page_text, 'Теория')
         tab.addTab(page_example, 'Примеры')
         tab.addTab(page_task, 'Задачи')
@@ -131,7 +125,7 @@ class Window_1_3(QWidget):
                     f"p = {self.v_tsk_p}, g = {self.v_tsk_g}, y = {self.v_tsk_y}, \nm = {self.v_tsk_m}, \nr = {self.v_tsk_r}, s = {self.v_tsk_s}\nВерно\n{v_tsk}")
             else:
                 self.outp_tsk.setText(
-                    f"p = {self.v_tsk_p}, g = {self.v_tsk_g}, y = {self.v_tsk_y}, \nm = {self.v_tsk_m}, \nr = {self.v_tsk_r}, s = {self.v_tsk_s}\nНеверно\n{v_tsk}")
+                    f"p = {self.v_tsk_p}, g = {self.v_tsk_g}, y = {self.v_tsk_y}, \nm = {self.v_tsk_m}, \nr = {self.v_tsk_r}, s = {self.v_tsk_s}\nНеверно")
             self.update()
         except ValueError:
             self.outp_tsk.setText(f"Ввери ответ")
