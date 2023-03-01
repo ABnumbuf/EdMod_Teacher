@@ -17,7 +17,7 @@ class Window_1_1(QWidget):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.setWindowTitle('Ё÷ѕ по схеме Ёль-√амал€: —оздание подписи')
+        self.setWindowTitle('Ё÷ѕ по схеме Ёль-√амал€: √енераци€ ключей')
         self.setFixedSize(700, 800)
         qr = self.frameGeometry()
         cp = QDesktopWidget().availableGeometry().center()
@@ -33,6 +33,7 @@ class Window_1_1(QWidget):
         page_text.setLayout(layout)
         text = read_text('text_mod1_block1.html')
         label_text = QLabel(text)
+        label_text.setFont(QFont('Arial', 12))
         label_text.setWordWrap(True)
         scrollArea = QScrollArea()
         scrollArea.setWidget(label_text)
@@ -41,7 +42,7 @@ class Window_1_1(QWidget):
         page_example = QWidget(self)
         layout_ex = QFormLayout()
         page_example.setLayout(layout_ex)
-        layout_ex.addRow(QLabel('—оздание Ё÷ѕ по схеме Ёль-√амал€'))
+        layout_ex.addRow(QLabel('-'))
         layout_ex.addRow(QLabel('¬веди значени€:'))
         self.inp_ex_m = QLineEdit()
         self.inp_ex_p = QLineEdit()
@@ -65,10 +66,10 @@ class Window_1_1(QWidget):
         page_task = QWidget(self)
         layout_tsk = QFormLayout()
         page_task.setLayout(layout_tsk)
-        layout_tsk.addRow(QLabel('ѕроверка Ё÷ѕ Ёль-√амал€ по заданным параметрам'))
+        layout_tsk.addRow(QLabel('-'))
         self.v_tsk_p, self.v_tsk_g, self.v_tsk_x, self.v_tsk_m = get_task_val()
         self.task_text = QLabel(
-            f'явл€еетс€ ли подпись правильной дл€: \np = {self.v_tsk_p}, g = {self.v_tsk_g}, x = {self.v_tsk_x}, m = {self.v_tsk_m}')
+            f'-: \np = {self.v_tsk_p}, g = {self.v_tsk_g}, x = {self.v_tsk_x}, m = {self.v_tsk_m}')
         self.tsk_r = QLineEdit()
         self.tsk_s = QLineEdit()
         btn_tsk_chk = QPushButton("ѕроверить")

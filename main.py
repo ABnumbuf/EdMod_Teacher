@@ -1,28 +1,27 @@
-
+# This Python file uses the following encoding: windows-1251
 
 import sys
 from PyQt5.QtWidgets import * 
 from PyQt5.QtGui import *
 from PyQt5 import QtCore
-from util import read_text
 import mod_1_sub_1, mod_1_sub_2, mod_1_sub_3 \
     , mod_2_sub_1 , mod_2_sub_2, mod_2_sub_3 \
     , mod_3_sub_1
     # , mod_3_sub_2 \
     # , mod_3_sub_3
 
-mods = ['Р­Р¦Рџ РїРѕ СЃС…РµРјРµ Р­Р»СЊ-Р“Р°РјР°Р»СЏ'
-        ,'Р—Р°РґР°С‡Р° Р”РёСЃРєСЂРµС‚РЅРѕРіРѕ Р›РѕРіР°СЂРёС„РјРёСЂРѕРІР°РЅРёСЏ'
-        ,'Р СЋРєР·Р°С‡РЅР°СЏ РљСЂРёРїС‚РѕСЃРёСЃС‚РµРјР°']
-sub_1 = ['Р“РµРЅРµСЂР°С†РёСЏ РљР»СЋС‡РµР№'
-        ,'РЎРѕР·РґР°РЅРёРµ РџРѕРґРїРёСЃРё'
-        ,'Р’Р°Р»РёРґР°С†РёСЏ РџРѕРґРїРёСЃРё']
-sub_2 = ['РњРµС‚РѕРґ РЎРѕРіР»Р°СЃРѕРІР°РЅРёСЏ'
-        ,'РњРµС‚РѕРґ РЎРџРҐ'
-        ,'Р’СЂРµРјСЏ Р’С‹РїРѕР»РЅРµРЅРёСЏ']
-sub_3 = ['Р—Р°РґР°С‡Р° Рѕ Р СЋРєР·Р°РєРµ'
-        ,'РђР»РіРѕСЂРёС‚Рј РЁРёС„СЂРѕРІР°РЅРёСЏ'
-        ,'РђР»РіРѕСЂРёС‚Рј Р”РµС€РёС„СЂРѕРІР°РЅРёСЏ']
+mods = ['ЭЦП по схеме Эль-Гамаля'
+        ,'Задача Дискретного Логарифмирования'
+        ,'Рюкзачная Криптосистема']
+sub_1 = ['Генерация Ключей'
+        ,'Создание Подписи'
+        ,'Валидация Подписи']
+sub_2 = ['Метод Согласования'
+        ,'Метод СПХ'
+        ,'Время Выполнения']
+sub_3 = ['Задача о Рюкзаке'
+        ,'Алгоритм Шифрования'
+        ,'Алгоритм Дешифрования']
 
 class MainWindow(QWidget):
 
@@ -42,8 +41,8 @@ class MainWindow(QWidget):
         layout = QFormLayout()
         tab.setLayout(layout)
         lb1 = QLabel("EdMod")
-        lb2 = QLabel("РљСЂРёРїС‚РѕРіСЂР°С„РёС‡РµСЃРєРёРµ РјРµС‚РѕРґС‹")
-        lb3 = QLabel("Р’С‹Р±РµСЂРё СЂР°Р·РґРµР»")
+        lb2 = QLabel("Криптографические методы")
+        lb3 = QLabel("Выбери раздел")
         lb1.setFont(QFont('Arial', 60))
         lb1.setAlignment(QtCore.Qt.AlignHCenter)
         lb2.setAlignment(QtCore.Qt.AlignHCenter)
@@ -58,7 +57,7 @@ class MainWindow(QWidget):
         self.cmb.setFixedSize(575,29)
 
 
-        self.btn = QPushButton("Р”Р°Р»РµРµ")
+        self.btn = QPushButton("Далее")
         self.btn.clicked.connect(self.click_btn)
 
         layout.addRow(self.cmb, self.btn)
@@ -77,7 +76,7 @@ class MainWindow(QWidget):
                     self.cmb.addItems(sub_2)
                 elif choosed == mods[2]:
                     self.cmb.addItems(sub_3)
-                self.btn.setText('РќР°С‡Р°С‚СЊ')
+                self.btn.setText('Начать')
             else:
                 if   choosed == sub_1[0]: mod_1_sub_1.win_1_1(self)
                 elif choosed == sub_1[1]: mod_1_sub_2.win_1_2(self)
@@ -90,7 +89,7 @@ class MainWindow(QWidget):
                 # elif choosed == sub_3[2]: mod_3_sub_3.win_3_3(self)
                 self.cmb.clear()
                 self.cmb.addItems(mods)
-                self.btn.setText('Р”Р°Р»РµРµ')
+                self.btn.setText('Далее')
             self.update()
         except ValueError:
             print(f"ERROR")

@@ -35,6 +35,7 @@ class Window_1_2(QWidget):
         page_text.setLayout(layout)
         text = read_text('text_mod1_block2.html')
         label_text = QLabel(text)
+        label_text.setFont(QFont('Arial', 12))
         label_text.setWordWrap(True)
         scrollArea = QScrollArea()
         scrollArea.setWidget(label_text)
