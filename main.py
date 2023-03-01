@@ -6,8 +6,8 @@ from PyQt5.QtGui import *
 from PyQt5 import QtCore
 from util import read_text
 import mod_1_sub_1, mod_1_sub_2, mod_1_sub_3 \
-    , mod_2_sub_1 , mod_2_sub_2, mod_2_sub_3
-    # , mod_3_sub_1 \
+    , mod_2_sub_1 , mod_2_sub_2, mod_2_sub_3 \
+    , mod_3_sub_1
     # , mod_3_sub_2 \
     # , mod_3_sub_3
 
@@ -85,7 +85,7 @@ class MainWindow(QWidget):
                 elif choosed == sub_2[0]: mod_2_sub_1.win_2_1(self)
                 elif choosed == sub_2[1]: mod_2_sub_2.win_2_2(self)
                 elif choosed == sub_2[2]: mod_2_sub_3.win_2_3(self)
-                # elif choosed == sub_3[0]: mod_3_sub_1.win_3_1(self)
+                elif choosed == sub_3[0]: mod_3_sub_1.win_3_1(self)
                 # elif choosed == sub_3[1]: mod_3_sub_2.win_3_2(self)
                 # elif choosed == sub_3[2]: mod_3_sub_3.win_3_3(self)
                 self.cmb.clear()

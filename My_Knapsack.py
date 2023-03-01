@@ -28,7 +28,7 @@ def knapSack(W, S):
 def knapSack_loop_out(W, S, result, text):
     n = len(W)
     if n == 0:
-        text.append(f'Π ΠµΡΠµΠ½ΠΈΠµ: {result}\n')
+        text.append(f'Πεψενθε: {result}\n')
         res = "".join(text)
         return res
     if (W[n-1] <= S):
@@ -52,8 +52,7 @@ def knapSack_out(W, S):
 
 # W = [1,2,4,8,16,32,64]
 # S = 47
-# for i in knapSack_out(W, S):
-#     print(i)
+# print(knapSack_out(W, S))
 
 
 
@@ -86,6 +85,6 @@ def ks_encrypt(v,m,w,text):
 
 
 
-ks_encrypt([6, 8, 15, 31], 65, 12,'on sale.')
+# ks_encrypt([6, 8, 15, 31], 65, 12,'on sale.')
 
 

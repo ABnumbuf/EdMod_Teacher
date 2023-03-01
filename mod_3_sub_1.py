@@ -3,15 +3,22 @@
 from PyQt5.QtWidgets import * 
 from PyQt5.QtGui import *
 from PyQt5 import QtCore
-import My_DiscrtLog as dis
-from util import read_text, get_values
+import My_Knapsack as ks
+from util import read_text
+import random as rd
+
+def get_task_val():
+    v_tsk_w = [x ** rd.randint(1,3) for x in range(2,rd.randint(5,6))]
+    v_tsk_w.sort()
+    v_tsk_s = rd.randint(v_tsk_w[2],100)
+    return v_tsk_w, v_tsk_s
 
 
-class Window_2_1(QWidget):
+class Window_3_1(QWidget):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.setWindowTitle('ЗДЛ: Метод согласования')
+        self.setWindowTitle('Рюкзачная криптосистема: Задача о рюкзаке')
         self.setFixedSize(700, 800)
         qr = self.frameGeometry()
         cp = QDesktopWidget().availableGeometry().center()
@@ -25,7 +32,7 @@ class Window_2_1(QWidget):
         page_text = QWidget(self)
         layout = QFormLayout()
         page_text.setLayout(layout)
-        text = read_text('text_mod2_block1.html')
+        text = read_text('text_mod1_block1.html')
         label_text = QLabel(text)
         label_text.setWordWrap(True)
         scrollArea = QScrollArea()
@@ -36,20 +43,17 @@ class Window_2_1(QWidget):
         layout_ex = QFormLayout()
         page_example.setLayout(layout_ex)
         layout_ex.addRow(QLabel(
-            f'<p>Решение задачи <box>a<sup>x</sup></box> &#8801; b (mod p)<p> методом согласования'))
+            f'Решение задачи о рюкзаке по введенным значениям'))
         layout_ex.addRow(QLabel('Введи значения:'))
-        self.inp_ex_a = QLineEdit()
-        self.inp_ex_b = QLineEdit()
-        self.inp_ex_n = QLineEdit()
+        self.inp_ex_w = QLineEdit()
+        self.inp_ex_s = QLineEdit()
         btn_ex = QPushButton("Решить")
         btn_ex.clicked.connect(self.click_btn_ex)
         self.outp_ex = QTextBrowser()
-        self.inp_ex_a.setFixedSize(620, 20)
-        self.inp_ex_b.setFixedSize(620, 20)
-        self.inp_ex_n.setFixedSize(620, 20)
-        layout_ex.addRow(QLabel('a = '), self.inp_ex_a)
-        layout_ex.addRow(QLabel('b = '), self.inp_ex_b)
-        layout_ex.addRow(QLabel('n = '), self.inp_ex_n)
+        self.inp_ex_w.setFixedSize(620, 20)
+        self.inp_ex_s.setFixedSize(620, 20)
+        layout_ex.addRow(QLabel('w = '), self.inp_ex_w)
+        layout_ex.addRow(QLabel('s = '), self.inp_ex_s)
         layout_ex.addRow(btn_ex)
         layout_ex.addRow(QLabel('Результат:'))
         layout_ex.addRow(self.outp_ex)
@@ -57,10 +61,10 @@ class Window_2_1(QWidget):
         page_task = QWidget(self)
         layout_tsk = QFormLayout()
         page_task.setLayout(layout_tsk)
-        layout_tsk.addRow(QLabel('Проверка решения ЗДЛ методом согласования'))
-        self.v_tsk_a, self.v_tsk_b, self.v_tsk_n = get_values(1)[0]
+        layout_tsk.addRow(QLabel('Проверка решения задачи о рюкзаке по заданым значениям'))
+        self.v_tsk_w, self.v_tsk_s = get_task_val()
         self.task_text = QLabel(
-            f'<p>Реши задачу: <box>{self.v_tsk_a}<sup>x</sup></box> &#8801; {self.v_tsk_b} (mod {self.v_tsk_n})</p>')
+            f'w = {self.v_tsk_w}\n s = {self.v_tsk_s}')
         self.task_text.setAlignment(QtCore.Qt.AlignCenter)
         self.task_text.setFixedSize(620, 160)
         self.inp_tsk = QLineEdit()
@@ -70,7 +74,7 @@ class Window_2_1(QWidget):
         btn_tsk_chk.clicked.connect(self.click_btn_tsk_chk)
         btn_tsk_rst.clicked.connect(self.click_btn_tsk_rst)
         layout_tsk.addRow(self.task_text)
-        layout_tsk.addRow(QLabel('Ввведи значение:'), self.inp_tsk)
+        layout_tsk.addRow(QLabel('Ввведи ответ:'), self.inp_tsk)
         layout_tsk.addRow(btn_tsk_chk)
         layout_tsk.addRow(btn_tsk_rst)
         layout_tsk.addRow(QLabel('Результат:'))
@@ -84,47 +88,48 @@ class Window_2_1(QWidget):
 
     def click_btn_ex(self):
         try:
-            v_exmpl_a = int(self.inp_ex_a.text())
-            v_exmpl_b = int(self.inp_ex_b.text())
-            v_exmpl_n = int(self.inp_ex_n.text())
-            self.outp_ex.setText(dis.coherence_method_output(v_exmpl_a, v_exmpl_b, v_exmpl_n))
-            self.inp_ex_a.clear()
-            self.inp_ex_b.clear()
-            self.inp_ex_n.clear()
+            v_exmpl_w = [int(i) for i in str(self.inp_ex_w.text()).split(',')]
+            v_exmpl_s = int(self.inp_ex_s.text())
+            self.outp_ex.setText(ks.knapSack_out(v_exmpl_w, v_exmpl_s))
+            self.inp_ex_w.clear()
+            self.inp_ex_s.clear()
             self.update()
         except ValueError:
-            self.outp_ex.setText(f"Введи значения: \na, b, n - целые числa")
+            self.inp_ex_w.clear()
+            self.inp_ex_s.clear()
+            self.outp_ex.setText(f"Введи значения: \nw - последовательность целых \ns - целое число")
             self.update()
     
     def click_btn_tsk_chk(self):
         try:
-            inp_tsk = int(self.inp_tsk.text())
-            v_x = dis.coherence_method(self.v_tsk_a, self.v_tsk_b, self.v_tsk_n)
+            inp_tsk = [int(i) for i in str(self.inp_tsk.text()).split(',')]
+            v_x =  ks.knapSack(self.v_tsk_w, self.v_tsk_s)
             if (inp_tsk == v_x):
                 self.outp_tsk.setText(
-                    f"<p><box>{self.v_tsk_a}<sup>{v_x}</sup></box> &#8801; {self.v_tsk_b} (mod {self.v_tsk_n})</p><p>Верно</n><p></p><p>{dis.coherence_method_output(self.v_tsk_a, self.v_tsk_b, self.v_tsk_n)}</p>")
+                    f"w = {self.v_tsk_w}\n s = {self.v_tsk_s}\nОтвет: {self.inp_tsk.text()}\nВерно")
             else:
                 self.outp_tsk.setText(
-                    f"<p><box>{self.v_tsk_a}<sup>{inp_tsk}</sup></box> &#8801; {self.v_tsk_b} (mod {self.v_tsk_n})</p><p>Неверно</n>")
+                    f"w = {self.v_tsk_w}\n s = {self.v_tsk_s}\nОтвет: {self.inp_tsk.text()}\nНеверно")
             self.inp_tsk.clear()
             self.update()
         except ValueError:
-            self.outp_tsk.setText(f"Введи значения: \nx - целое число")
+            self.inp_tsk.clear()
+            self.outp_tsk.setText(f"Введи значения: \nцелое число")
             self.update()
 
     def click_btn_tsk_rst(self):
         try:
-            self.v_tsk_a, self.v_tsk_b, self.v_tsk_n = get_values(1)[0]
+            self.v_tsk_w, self.v_tsk_s = get_task_val()
             self.task_text.setText(
-                f'<p>Реши задачу: <box>{self.v_tsk_a}<sup>x</sup></box> &#8801; {self.v_tsk_b} (mod {self.v_tsk_n})</p>')
+                f'w = {self.v_tsk_w}\n s = {self.v_tsk_s}')
             self.inp_tsk.clear()
             self.update()
         except ValueError:
             print(ValueError)
 
 
-def win_2_1(w):
+def win_3_1(w):
     
-    w.window = Window_2_1()
+    w.window = Window_3_1()
     w.window.show()
 
