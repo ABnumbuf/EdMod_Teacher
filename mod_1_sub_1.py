@@ -2,14 +2,14 @@
 
 from PyQt5.QtWidgets import * 
 from PyQt5.QtGui import *
-from util import read_text
+from util import read_text, get_random_message
 import My_ElGamal as elg
 
 def get_task_val():
     v_tsk_p = elg.get_prime_number_in_range(10, 100)
     v_tsk_g = elg.get_primitive_root(v_tsk_p)
     v_tsk_x = elg.get_prime_number_in_range(1, v_tsk_p - 1)
-    v_tsk_m = elg.get_random_message(6)
+    v_tsk_m = get_random_message(6)
     return v_tsk_p,v_tsk_g,v_tsk_x,v_tsk_m
 
 
@@ -23,10 +23,11 @@ class Window_1_1(QWidget):
         cp = QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
+        # self.setStyleSheet('background-color: #333232; color: #FFFFEB;')
         main_layout = QGridLayout(self)
         self.setLayout(main_layout)
         tab = QTabWidget(self)
-        tab.setFont(QFont('Arial', 14))
+        tab.setFont(QFont('Arial', 12))
         # Page Theory
         page_text = QWidget(self)
         layout = QFormLayout()
@@ -42,6 +43,7 @@ class Window_1_1(QWidget):
         page_example = QWidget(self)
         layout_ex = QFormLayout()
         page_example.setLayout(layout_ex)
+        page_example.setFont(QFont('Arial', 12))
         layout_ex.addRow(QLabel('-'))
         layout_ex.addRow(QLabel('¬веди значени€:'))
         self.inp_ex_m = QLineEdit()

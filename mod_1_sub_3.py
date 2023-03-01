@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5 import QtCore
 import random
-from util import read_text
+from util import read_text, get_random_message
 import My_ElGamal as elg
 
 def get_task_val():
@@ -12,7 +12,7 @@ def get_task_val():
     flag = random.randint(0, 1)
     if (flag):
         v_tsk_x = v_tsk_p + 6
-    v_tsk_m = elg.get_random_message(6)
+    v_tsk_m = get_random_message(6)
     v_tsk_r, v_tsk_s = elg.ds_ElGamal(v_tsk_m, v_tsk_p, v_tsk_g, v_tsk_x)
     return v_tsk_m, v_tsk_p, v_tsk_g, v_tsk_y, v_tsk_r, v_tsk_s
 

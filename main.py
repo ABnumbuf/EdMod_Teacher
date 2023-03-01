@@ -3,12 +3,10 @@
 import sys
 from PyQt5.QtWidgets import * 
 from PyQt5.QtGui import *
-from PyQt5 import QtCore
+from PyQt5 import QtCore, QtGui
 import mod_1_sub_1, mod_1_sub_2, mod_1_sub_3 \
     , mod_2_sub_1 , mod_2_sub_2, mod_2_sub_3 \
-    , mod_3_sub_1
-    # , mod_3_sub_2 \
-    # , mod_3_sub_3
+    , mod_3_sub_1, mod_3_sub_2, mod_3_sub_3
 
 mods = ['ЭЦП по схеме Эль-Гамаля'
         ,'Задача Дискретного Логарифмирования'
@@ -22,6 +20,7 @@ sub_2 = ['Метод Согласования'
 sub_3 = ['Задача о Рюкзаке'
         ,'Алгоритм Шифрования'
         ,'Алгоритм Дешифрования']
+
 
 class MainWindow(QWidget):
 
@@ -41,6 +40,7 @@ class MainWindow(QWidget):
         layout = QFormLayout()
         tab.setLayout(layout)
         lb1 = QLabel("EdMod")
+        lb1.setStyleSheet('color: #FFDA85')
         lb2 = QLabel("Криптографические методы")
         lb3 = QLabel("Выбери раздел")
         lb1.setFont(QFont('Arial', 60))
@@ -85,8 +85,8 @@ class MainWindow(QWidget):
                 elif choosed == sub_2[1]: mod_2_sub_2.win_2_2(self)
                 elif choosed == sub_2[2]: mod_2_sub_3.win_2_3(self)
                 elif choosed == sub_3[0]: mod_3_sub_1.win_3_1(self)
-                # elif choosed == sub_3[1]: mod_3_sub_2.win_3_2(self)
-                # elif choosed == sub_3[2]: mod_3_sub_3.win_3_3(self)
+                elif choosed == sub_3[1]: mod_3_sub_2.win_3_2(self)
+                elif choosed == sub_3[2]: mod_3_sub_3.win_3_3(self)
                 self.cmb.clear()
                 self.cmb.addItems(mods)
                 self.btn.setText('Далее')
@@ -98,6 +98,21 @@ class MainWindow(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+    app.setStyle('Fusion')
+
+    dark_palette = QtGui.QPalette()
+    dark_palette.setColor(QtGui.QPalette.Background, QtGui.QColor(51, 50, 50))
+    dark_palette.setColor(QtGui.QPalette.Base, QtGui.QColor(61, 60, 60))
+    dark_palette.setColor(QtGui.QPalette.WindowText, QtGui.QColor(255, 255, 235))
+    dark_palette.setColor(QtGui.QPalette.BrightText, QtGui.QColor(255, 255, 235))
+    dark_palette.setColor(QtGui.QPalette.Text, QtGui.QColor(255, 255, 235))
+    dark_palette.setColor(QtGui.QPalette.Button, QtGui.QColor(255, 218, 133))
+    dark_palette.setColor(QtGui.QPalette.ButtonText, QtGui.QColor(31, 30, 30))
+    dark_palette.setColor(QtGui.QPalette.Highlight, QtGui.QColor(255, 218, 133))
+    dark_palette.setColor(QtGui.QPalette.HighlightedText, QtGui.QColor(31, 30, 30))
+
+    app.setPalette(dark_palette)
+
     window = MainWindow()
     window.show()
     app.exec()

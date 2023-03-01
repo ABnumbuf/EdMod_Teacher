@@ -62,7 +62,7 @@ class Window_3_1(QWidget):
         page_task = QWidget(self)
         layout_tsk = QFormLayout()
         page_task.setLayout(layout_tsk)
-        layout_tsk.addRow(QLabel('Проверка решения задачи о рюкзаке по заданым значениям'))
+        layout_tsk.addRow(QLabel('Проверка решения задачи о рюкзаке по заданным значениям'))
         self.v_tsk_w, self.v_tsk_s = get_task_val()
         self.task_text = QLabel(
             f'w = {self.v_tsk_w}\n s = {self.v_tsk_s}')

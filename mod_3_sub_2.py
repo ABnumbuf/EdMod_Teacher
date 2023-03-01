@@ -3,15 +3,28 @@
 from PyQt5.QtWidgets import * 
 from PyQt5.QtGui import *
 from PyQt5 import QtCore
-import My_DiscrtLog as dis
-from util import read_text, get_values
+import My_Knapsack as ks
+from util import read_text, get_random_message, extended_gcd
+import random
 
 
-class Window_2_1(QWidget):
+def get_task_val():
+    v_tsk_v = [x ** random.randint(1,3) for x in range(2, random.randint(5,6))]
+    v_tsk_v.sort()
+    v_tsk_m = random.randint(2, 90)
+    v_tsk_w = random.randint(2, 40)
+    while extended_gcd(v_tsk_m,v_tsk_w)[0] == 1:
+        v_tsk_m = random.randint(2, 90)
+        v_tsk_w = random.randint(2, 40)
+    v_tsk_text = get_random_message(6)
+    return v_tsk_v, v_tsk_m, v_tsk_w, v_tsk_text.upper()
+
+
+class Window_3_2(QWidget):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.setWindowTitle('ЗДЛ: Метод согласования')
+        self.setWindowTitle('Рюкзачная криптосистема: Алгоритм шифрования')
         self.setFixedSize(700, 800)
         qr = self.frameGeometry()
         cp = QDesktopWidget().availableGeometry().center()
@@ -25,7 +38,7 @@ class Window_2_1(QWidget):
         page_text = QWidget(self)
         layout = QFormLayout()
         page_text.setLayout(layout)
-        text = read_text('text_mod2_block1.html')
+        text = read_text('text_mod2_block2.html')
         label_text = QLabel(text)
         label_text.setFont(QFont('Arial', 12))
         label_text.setWordWrap(True)
@@ -37,20 +50,23 @@ class Window_2_1(QWidget):
         layout_ex = QFormLayout()
         page_example.setLayout(layout_ex)
         layout_ex.addRow(QLabel(
-            f'<p>Решение задачи <box>a<sup>x</sup></box> &#8801; b (mod p) методом согласования</p>'))
+            f'Шифрование сообщения по алгоритму рюкзачной криптосистемы'))
         layout_ex.addRow(QLabel('Введи значения:'))
-        self.inp_ex_a = QLineEdit()
-        self.inp_ex_b = QLineEdit()
-        self.inp_ex_n = QLineEdit()
+        self.inp_ex_w = QLineEdit()
+        self.inp_ex_v = QLineEdit()
+        self.inp_ex_m = QLineEdit()
+        self.inp_ex_text = QLineEdit()
         btn_ex = QPushButton("Решить")
         btn_ex.clicked.connect(self.click_btn_ex)
         self.outp_ex = QTextBrowser()
-        self.inp_ex_a.setFixedSize(620, 20)
-        self.inp_ex_b.setFixedSize(620, 20)
-        self.inp_ex_n.setFixedSize(620, 20)
-        layout_ex.addRow(QLabel('a = '), self.inp_ex_a)
-        layout_ex.addRow(QLabel('b = '), self.inp_ex_b)
-        layout_ex.addRow(QLabel('n = '), self.inp_ex_n)
+        self.inp_ex_w.setFixedSize(620, 20)
+        self.inp_ex_v.setFixedSize(620, 20)
+        self.inp_ex_m.setFixedSize(620, 20)
+        self.inp_ex_text.setFixedSize(620, 20)
+        layout_ex.addRow(QLabel('w = '), self.inp_ex_w)
+        layout_ex.addRow(QLabel('v = '), self.inp_ex_v)
+        layout_ex.addRow(QLabel('m = '), self.inp_ex_m)
+        layout_ex.addRow(QLabel('text = '), self.inp_ex_text)
         layout_ex.addRow(btn_ex)
         layout_ex.addRow(QLabel('Результат:'))
         layout_ex.addRow(self.outp_ex)
@@ -58,10 +74,10 @@ class Window_2_1(QWidget):
         page_task = QWidget(self)
         layout_tsk = QFormLayout()
         page_task.setLayout(layout_tsk)
-        layout_tsk.addRow(QLabel('Проверка решения ЗДЛ методом согласования'))
-        self.v_tsk_a, self.v_tsk_b, self.v_tsk_n = get_values(1)[0]
+        layout_tsk.addRow(QLabel('Проверка шифрования по алгоритму рюкзачной криптосистемы'))
+        self.v_tsk_v, self.v_tsk_m, self.v_tsk_w, self.v_tsk_text = get_task_val()
         self.task_text = QLabel(
-            f'<p>Реши задачу: <box>{self.v_tsk_a}<sup>x</sup></box> &#8801; {self.v_tsk_b} (mod {self.v_tsk_n})</p>')
+            f'Зашифруй сообщение: \ntext = {self.v_tsk_text} \nw = {self.v_tsk_w} \nv = {self.v_tsk_v} \nm = {self.v_tsk_m}')
         self.task_text.setAlignment(QtCore.Qt.AlignCenter)
         self.task_text.setFixedSize(620, 160)
         self.inp_tsk = QLineEdit()
@@ -71,7 +87,7 @@ class Window_2_1(QWidget):
         btn_tsk_chk.clicked.connect(self.click_btn_tsk_chk)
         btn_tsk_rst.clicked.connect(self.click_btn_tsk_rst)
         layout_tsk.addRow(self.task_text)
-        layout_tsk.addRow(QLabel('Ввведи значение:'), self.inp_tsk)
+        layout_tsk.addRow(QLabel('Ввведи ответ:'), self.inp_tsk)
         layout_tsk.addRow(btn_tsk_chk)
         layout_tsk.addRow(btn_tsk_rst)
         layout_tsk.addRow(QLabel('Результат:'))
@@ -85,47 +101,49 @@ class Window_2_1(QWidget):
 
     def click_btn_ex(self):
         try:
-            v_exmpl_a = int(self.inp_ex_a.text())
-            v_exmpl_b = int(self.inp_ex_b.text())
-            v_exmpl_n = int(self.inp_ex_n.text())
-            self.outp_ex.setText(dis.coherence_method_output(v_exmpl_a, v_exmpl_b, v_exmpl_n))
-            self.inp_ex_a.clear()
-            self.inp_ex_b.clear()
-            self.inp_ex_n.clear()
+            v_exmpl_w = str(self.inp_ex_w.text())
+            v_exmpl_v = int(self.inp_ex_v.text())
+            v_exmpl_m = int(self.inp_ex_m.text())
+            v_exmpl_text = str(self.inp_ex_text.text())
+            self.outp_ex.setText('')
+            self.inp_ex_w.clear()
+            self.inp_ex_v.clear()
+            self.inp_ex_m.clear()
+            self.inp_ex_text.clear()
             self.update()
         except ValueError:
-            self.outp_ex.setText(f"Введи значения: \na, b, n - целые числa")
+            self.outp_ex.setText(f"Введи значения: \nm, w - целые числa \nv - последовательность целых чисел (быстроратсущий набор) \ntext - строка")
             self.update()
     
     def click_btn_tsk_chk(self):
         try:
-            inp_tsk = int(self.inp_tsk.text())
-            v_x = dis.coherence_method(self.v_tsk_a, self.v_tsk_b, self.v_tsk_n)
-            if (inp_tsk == v_x):
+            inp_tsk = str(self.inp_tsk.text())
+            v_tsk = ks.ks_encrypt(self.v_tsk_v, self.v_tsk_m, self.v_tsk_w, self.v_tsk_text)
+            if (inp_tsk == v_tsk):
                 self.outp_tsk.setText(
-                    f"<p><box>{self.v_tsk_a}<sup>{v_x}</sup></box> &#8801; {self.v_tsk_b} (mod {self.v_tsk_n})</p><p>Верно</n><p></p><p>{dis.coherence_method_output(self.v_tsk_a, self.v_tsk_b, self.v_tsk_n)}</p>")
+                    f"\nВерно")
             else:
                 self.outp_tsk.setText(
-                    f"<p><box>{self.v_tsk_a}<sup>{inp_tsk}</sup></box> &#8801; {self.v_tsk_b} (mod {self.v_tsk_n})</p><p>Неверно</n>")
+                    f"\nНеверно")
             self.inp_tsk.clear()
             self.update()
         except ValueError:
-            self.outp_tsk.setText(f"Введи значения: \nx - целое число")
+            self.outp_tsk.setText(f"Введи ответ: шифртекст")
             self.update()
 
     def click_btn_tsk_rst(self):
         try:
-            self.v_tsk_a, self.v_tsk_b, self.v_tsk_n = get_values(1)[0]
+            self.v_tsk_v, self.v_tsk_m, self.v_tsk_w, self.v_tsk_text = get_task_val()
             self.task_text.setText(
-                f'<p>Реши задачу: <box>{self.v_tsk_a}<sup>x</sup></box> &#8801; {self.v_tsk_b} (mod {self.v_tsk_n})</p>')
+                f'Зашифруй сообщение: \ntext = {self.v_tsk_text} \nw = {self.v_tsk_w} \nv = {self.v_tsk_v} \nm = {self.v_tsk_m}')
             self.inp_tsk.clear()
             self.update()
         except ValueError:
             print(ValueError)
 
 
-def win_2_1(w):
+def win_3_2(w):
     
-    w.window = Window_2_1()
+    w.window = Window_3_2()
     w.window.show()
 

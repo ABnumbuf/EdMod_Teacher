@@ -1,21 +1,9 @@
 # This Python file uses the following encoding: windows-1251
 
 from typing import Tuple, List
-from random import randint, choice
+from random import randint
 from math import gcd
-from util import binary_pow, get_prime_number_in_range, modular_inv, get_coprime_in_range
-
-
-def get_random_message(size: int) -> str:
-    # Возращает рандомную строку
-    #
-    m = []
-    alpha = 'abcdefghijklmnopqrstuvwxyz'
-    for i in range(size):
-        m.append(choice(alpha))
-    res = ""
-    res = res.join(m)
-    return res
+from util import binary_pow, get_prime_number_in_range, get_coprime_in_range
 
 
 def get_primitive_root(p: int) -> int:

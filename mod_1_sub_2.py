@@ -3,7 +3,7 @@
 from PyQt5.QtWidgets import * 
 from PyQt5.QtGui import *
 from PyQt5 import QtCore
-from util import read_text
+from util import read_text, get_random_message
 import My_ElGamal as elg
 
 
@@ -11,7 +11,7 @@ def get_task_val():
     v_tsk_p = elg.get_prime_number_in_range(10, 100)
     v_tsk_g = elg.get_primitive_root(v_tsk_p)
     v_tsk_x = elg.get_prime_number_in_range(1, v_tsk_p - 1)
-    v_tsk_m = elg.get_random_message(6)
+    v_tsk_m = get_random_message(6)
     return v_tsk_p,v_tsk_g,v_tsk_x,v_tsk_m
 
 
@@ -25,12 +25,14 @@ class Window_1_2(QWidget):
         cp = QDesktopWidget().availableGeometry().center()
         qr.moveCenter(cp)
         self.move(qr.topLeft())
+        
         main_layout = QGridLayout(self)
         self.setLayout(main_layout)
         tab = QTabWidget(self)
-        tab.setFont(QFont('Arial', 14))
+        tab.setFont(QFont('Arial', 12))
         # Page Theory
         page_text = QWidget(self)
+        page_text.setStyleSheet('background-color: #333232')
         layout = QFormLayout()
         page_text.setLayout(layout)
         text = read_text('text_mod1_block2.html')
