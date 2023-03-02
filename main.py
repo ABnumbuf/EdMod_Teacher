@@ -40,7 +40,7 @@ class MainWindow(QWidget):
         layout = QFormLayout()
         tab.setLayout(layout)
         lb1 = QLabel("EdMod")
-        lb1.setStyleSheet('color: #FFDA85')
+        lb1.setStyleSheet('color: #FFCB69')
         lb2 = QLabel("Криптографические методы")
         self.lb3 = QLabel("Выбери раздел")
         lb1.setFont(QFont('Arial', 60))
