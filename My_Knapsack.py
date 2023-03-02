@@ -1,6 +1,27 @@
 # This Python file uses the following encoding: windows-1251
 
 import string
+import util
+import random
+
+
+bitalph = {"A": "00000", "B": "00001", "C": "00010", "D": "00011", "E": "00100"
+             , "F": "00101", "G": "00110", "H": "00111", "I": "01000", "J": "01001"
+             , "K": "01010", "L": "01011", "M": "01100", "N": "01101", "O": "01110"
+             , "P": "01111", "Q": "10000", "R": "10001", "S": "10010", "T": "10011"
+             , "V": "10100", "U": "10101", "W": "10110", "X": "10111", "Y": "11000", "Z": "11001"}
+
+
+def get_superincr_list():
+    l = []
+    l.append(random.randint(1,8))
+    for i in range(3):
+        sum = 0
+        for j in l:
+            sum += j 
+        t = random.randint(sum+1,10+sum)
+        l.append(t) 
+    return l
 
 
 def knapSack_loop(W, S, result):
@@ -55,19 +76,15 @@ def knapSack_out(W, S):
     return knapSack_loop_out(W, S, result, text)
 
 
-# W = [1,2,4,8,16,32,64]
-# S = 47
-# print(knapSack_out(W, S))
+# W = [6,8,15,31]
+# S = 54
+# for i in knapSack(W, S):
+#     print(i)
 
 
 def ks_encrypt(v,m,w,text):
     text = text.translate(str.maketrans({key: None for key in string.punctuation}))
     text = ''.join(text.split()).upper()
-    bitalph = {"A": "00000", "B": "00001", "C": "00010", "D": "00011", "E": "00100"
-             , "F": "00101", "G": "00110", "H": "00111", "I": "01000", "J": "01001"
-             , "K": "01010", "L": "01011", "M": "01100", "N": "01101", "O": "01110"
-             , "P": "01111", "Q": "10000", "R": "10001", "S": "10010", "T": "10011"
-             , "V": "10100", "U": "10101", "W": "10110", "X": "10111", "Y": "11000", "Z": "11001"}
     text = [i for i in ''.join([bitalph[i] for i in text])]
     for i in range(len(text)%len(v)): text.append('1')
     temp_text = [''.join([text[i+j] for j in range(len(v))]) for i in range(0,len(text),len(v))]
@@ -81,6 +98,93 @@ def ks_encrypt(v,m,w,text):
     return crypt
 
 
-# ks_encrypt([6, 8, 15, 31], 65, 12,'on sale.')
+def ks_encrypt_outp(v,m,w,text):
+    outp_text = []
+    text = text.translate(str.maketrans({key: None for key in string.punctuation}))
+    text = ''.join(text.split()).upper()
+    outp_text.append(f"text = '{text}'\n")
+    text = [i for i in ''.join([bitalph[i] for i in text])]
+    outp_text.append(f'Заменим текст на двоичный код\n')
+    for i in range(len(text)%len(v)): text.append('1')
+    temp_text = [''.join([text[i+j] for j in range(len(v))]) for i in range(0,len(text),len(v))]
+    outp_text.append(f'text = {temp_text}\n')
+    numb = [(i*w) % m for i in v]
+    outp_text.append(f'последовательность шифрвания: {numb}\n')
+    crypt = []
+    for i in temp_text:
+        sum = 0
+        for k in range(len(v)):
+            sum += int(i[k])*numb[k]
+        crypt.append(sum)
+    outp_text.append(f'Шифр: {crypt}\n')
+    res = "".join(outp_text)
+    return res
 
 
+#print(ks_encrypt_outp([6, 8, 15, 31], 65, 12,'on sale.'))
+
+
+def ks_decrypt(v,m,w,crypt):
+    crypt = crypt.split(',')
+    crypt = [int(i) for i in crypt]
+    w_inv = util.modular_inv(w,m)
+    numb = [(i*w) % m for i in v]
+    temp = [i*w_inv % m for i in numb]
+    text_temp = ''
+    for i in crypt:
+        for j in knapSack(temp, w_inv*i % m):
+            text_temp += str(j)
+    text=[]
+    for i in range(0, len(text_temp)-5, 5):
+        temp = ''
+        for k in range(5):
+            temp += text_temp[i+k]
+        text.append(temp) 
+    res=[]
+    for i in text:
+        res.append(next(ch for ch, code in bitalph.items() if code == i))
+    res = ''.join(res)
+    return res
+
+
+def ks_decrypt_outp(v,m,w,crypt):
+    outp_text = []
+    crypt = crypt.split(',')
+    crypt = [int(i) for i in crypt]
+    w_inv = util.modular_inv(w,m)
+    outp_text.append(f'Обратное w по модулю m: w_inv = {w_inv}\n')
+    numb = [(i*w) % m for i in v]
+    outp_text.append(f'Последовательность шифрования: {numb}\n')
+    temp = [i*w_inv % m for i in numb]
+    outp_text.append(f'Веса для задачи о рюкзаке: {temp}\n')
+    text_temp = ''
+    for i in crypt:
+        s = w_inv*i % m
+        outp_text.append(f'S = {w_inv}*{i} (mod {m}) = {w_inv*i % m}\n')
+        out=''
+        for j in knapSack(temp, s):
+            text_temp += str(j)
+            out += str(j)
+        outp_text.append(f'Решене для S={s}: {out}\n')
+    text=[]
+    for i in range(0, len(text_temp)-5, 5):
+        temp = ''
+        for k in range(5):
+            temp += text_temp[i+k]
+        text.append(temp) 
+    outp_text.append(f'Восстановим открытый текст, перегруппировав биты в блоки длиной пять бит:\n')
+    outp_text.append(f'{text}\n')
+    outp_text.append(f'Заменим каждый блок на соотвествующую букву:\n')
+    res=[]
+    for i in text:
+        res.append(next(ch for ch, code in bitalph.items() if code == i))
+    outp_text.append(f'{res}\n')
+    res = ''.join(res)
+    outp_text.append(f"text = '{res}'\n")
+    outp_text = "".join(outp_text)
+    return outp_text
+
+
+# print(ks_decrypt(v_tsk_v, v_tsk_m, v_tsk_w, str1))
+# print(ks_encrypt([6, 8, 15, 31], 65, 12,'on sale.'))
+# print(ks_decrypt([6, 8, 15, 31], 65, 12,str1))

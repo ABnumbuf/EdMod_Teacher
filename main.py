@@ -9,17 +9,17 @@ import mod_1_sub_1, mod_1_sub_2, mod_1_sub_3 \
     , mod_3_sub_1, mod_3_sub_2, mod_3_sub_3
 
 mods = ['ЭЦП по схеме Эль-Гамаля'
-        ,'Задача Дискретного Логарифмирования'
-        ,'Рюкзачная Криптосистема']
-sub_1 = ['Генерация Ключей'
-        ,'Создание Подписи'
-        ,'Валидация Подписи']
-sub_2 = ['Метод Согласования'
+        ,'Задача дискретного логарифмирования'
+        ,'Рюкзачная криптосистема']
+sub_1 = ['Генерация ключей'
+        ,'Создание подписи'
+        ,'Валидация подписи']
+sub_2 = ['Метод согласования'
         ,'Метод СПХ'
-        ,'Время Выполнения']
-sub_3 = ['Задача о Рюкзаке'
-        ,'Алгоритм Шифрования'
-        ,'Алгоритм Дешифрования']
+        ,'Время выполнения']
+sub_3 = ['Задача о рюкзаке'
+        ,'Алгоритм шифрования'
+        ,'Алгоритм дешифрования']
 
 
 class MainWindow(QWidget):
@@ -42,15 +42,15 @@ class MainWindow(QWidget):
         lb1 = QLabel("EdMod")
         lb1.setStyleSheet('color: #FFDA85')
         lb2 = QLabel("Криптографические методы")
-        lb3 = QLabel("Выбери раздел")
+        self.lb3 = QLabel("Выбери раздел")
         lb1.setFont(QFont('Arial', 60))
         lb1.setAlignment(QtCore.Qt.AlignHCenter)
         lb2.setAlignment(QtCore.Qt.AlignHCenter)
-        lb3.setAlignment(QtCore.Qt.AlignHCenter)
+        self.lb3.setAlignment(QtCore.Qt.AlignHCenter)
         lb2.setFixedHeight(150)
         layout.addRow(lb1)
         layout.addRow(lb2)
-        layout.addRow(lb3)
+        layout.addRow(self.lb3)
 
         self.cmb = QComboBox()
         self.cmb.addItems(mods)
@@ -77,6 +77,7 @@ class MainWindow(QWidget):
                 elif choosed == mods[2]:
                     self.cmb.addItems(sub_3)
                 self.btn.setText('Начать')
+                self.lb3.setText(f'Выбери модуль раздела {choosed}')
             else:
                 if   choosed == sub_1[0]: mod_1_sub_1.win_1_1(self)
                 elif choosed == sub_1[1]: mod_1_sub_2.win_1_2(self)
@@ -90,6 +91,7 @@ class MainWindow(QWidget):
                 self.cmb.clear()
                 self.cmb.addItems(mods)
                 self.btn.setText('Далее')
+                self.lb3.setText(f'Выбери раздел')
             self.update()
         except ValueError:
             print(f"ERROR")
@@ -111,7 +113,7 @@ if __name__ == '__main__':
     dark_palette.setColor(QtGui.QPalette.Highlight, QtGui.QColor(255, 218, 133))
     dark_palette.setColor(QtGui.QPalette.HighlightedText, QtGui.QColor(31, 30, 30))
 
-    app.setPalette(dark_palette)
+    # app.setPalette(dark_palette)
 
     window = MainWindow()
     window.show()

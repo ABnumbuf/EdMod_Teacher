@@ -32,7 +32,6 @@ class Window_1_2(QWidget):
         tab.setFont(QFont('Arial', 12))
         # Page Theory
         page_text = QWidget(self)
-        page_text.setStyleSheet('background-color: #333232')
         layout = QFormLayout()
         page_text.setLayout(layout)
         text = read_text('text_mod1_block2.html')

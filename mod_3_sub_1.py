@@ -32,7 +32,7 @@ class Window_3_1(QWidget):
         page_text = QWidget(self)
         layout = QFormLayout()
         page_text.setLayout(layout)
-        text = read_text('text_mod1_block1.html')
+        text = read_text('text_mod3_block1.html')
         label_text = QLabel(text)
         label_text.setFont(QFont('Arial', 12))
         label_text.setWordWrap(True)
