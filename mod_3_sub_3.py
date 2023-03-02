@@ -4,7 +4,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5 import QtCore
 import My_Knapsack as ks
-from util import read_text, get_random_message
+from util import read_text, get_random_message, extended_gcd
 import random
 
 
@@ -13,7 +13,7 @@ def get_task_val():
     v_tsk_v.sort()
     v_tsk_m = random.randint(2, 90)
     v_tsk_w = random.randint(2, 40)
-    while random.extended_gcd(v_tsk_m,v_tsk_w)[0] == 1:
+    while extended_gcd(v_tsk_m,v_tsk_w)[0] == 1:
         v_tsk_m = random.randint(2, 90)
         v_tsk_w = random.randint(2, 40)
     v_tsk_text = get_random_message(6)
@@ -38,7 +38,7 @@ class Window_3_3(QWidget):
         page_text = QWidget(self)
         layout = QFormLayout()
         page_text.setLayout(layout)
-        text = read_text('text_mod2_block2.html')
+        text = read_text('text_mod3_block3.html')
         label_text = QLabel(text)
         label_text.setFont(QFont('Arial', 12))
         label_text.setWordWrap(True)
