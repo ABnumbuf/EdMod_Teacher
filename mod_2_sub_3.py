@@ -15,14 +15,9 @@ class Window_2_3(QWidget):
         super().__init__(*args, **kwargs)
         self.setWindowTitle('ЗДЛ: Время выполнения')
         self.setFixedSize(700, 800)
-        self.setFont(QFont('Arial', 14))
-        qr = self.frameGeometry()
-        cp = QDesktopWidget().availableGeometry().center()
-        qr.moveCenter(cp)
-        self.move(qr.topLeft())
+        self.setFont(QFont('Arial', 12))
         main_layout = QGridLayout(self)
         self.setLayout(main_layout)
-
         self.inp_method = QComboBox()
         self.inp_method.addItems(methods)
         self.inp_tests = QLineEdit()
@@ -31,7 +26,6 @@ class Window_2_3(QWidget):
         btn = QPushButton("Выполнить")
         btn.clicked.connect(self.click_btn)
         self.outp = QTextBrowser()
-
         main_layout.addWidget(QLabel('Рассчет времени решения задачи дискретного логарифмирования'), 0, 0, 2, 2)
         main_layout.addWidget(QLabel('Выбери метод:'), 2, 0)
         main_layout.addWidget(self.inp_method, 2, 1)

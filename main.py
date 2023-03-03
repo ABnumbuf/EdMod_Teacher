@@ -29,40 +29,29 @@ class MainWindow(QWidget):
 
         self.setWindowTitle('EdMod')
         self.setFixedSize(725, 300)
-        self.setFont(QFont('Arial', 14))
-        qr = self.frameGeometry()
-        cp = QDesktopWidget().availableGeometry().center()
-        qr.moveCenter(cp)
-        self.move(qr.topLeft())
+        self.setFont(QFont('Arial', 12))
         main_layout = QGridLayout(self)
         self.setLayout(main_layout)
-        tab = QWidget(self)
-        layout = QFormLayout()
-        tab.setLayout(layout)
         lb1 = QLabel("EdMod")
         lb1.setStyleSheet('color: #FFCB69')
         lb2 = QLabel("Криптографические методы")
         self.lb3 = QLabel("Выбери раздел")
-        lb1.setFont(QFont('Arial', 60))
+        lb1.setFont(QFont('Arial', 50))
         lb1.setAlignment(QtCore.Qt.AlignHCenter)
         lb2.setAlignment(QtCore.Qt.AlignHCenter)
         self.lb3.setAlignment(QtCore.Qt.AlignHCenter)
-        lb2.setFixedHeight(150)
-        layout.addRow(lb1)
-        layout.addRow(lb2)
-        layout.addRow(self.lb3)
-
+        lb2.setFixedHeight(125)
         self.cmb = QComboBox()
         self.cmb.addItems(mods)
-        self.cmb.setFixedSize(575,29)
-
-
         self.btn = QPushButton("Далее")
         self.btn.clicked.connect(self.click_btn)
+        self.btn.setFixedSize(100, 35)
+        main_layout.addWidget(lb1, 0, 0, 1, 2)
+        main_layout.addWidget(lb2, 1, 0, 1, 2)
+        main_layout.addWidget(self.lb3, 2, 0, 1, 2)
+        main_layout.addWidget(self.cmb, 3, 0, 2, 1)
+        main_layout.addWidget(self.btn, 3, 1)
 
-        layout.addRow(self.cmb, self.btn)
-
-        main_layout.addWidget(tab, 0, 0, 2, 1)
 
     def click_btn(self):
         try:
@@ -77,7 +66,7 @@ class MainWindow(QWidget):
                 elif choosed == mods[2]:
                     self.cmb.addItems(sub_3)
                 self.btn.setText('Начать')
-                self.lb3.setText(f'Выбери модуль раздела {choosed}')
+                self.lb3.setText(f'Выбери подраздел [{choosed}]')
             else:
                 if   choosed == sub_1[0]: mod_1_sub_1.win_1_1(self)
                 elif choosed == sub_1[1]: mod_1_sub_2.win_1_2(self)

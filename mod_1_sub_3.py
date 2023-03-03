@@ -23,14 +23,9 @@ class Window_1_3(QWidget):
 
         self.setWindowTitle('ЭЦП по схеме Эль-Гамаля: Валидация подписи')
         self.setFixedSize(700, 800)
-        qr = self.frameGeometry()
-        cp = QDesktopWidget().availableGeometry().center()
-        qr.moveCenter(cp)
-        self.move(qr.topLeft())
         main_layout = QGridLayout(self)
         self.setLayout(main_layout)
         tab = QTabWidget(self)
-        tab.setFont(QFont('Arial', 14))
         # Page Theory
         page_text = QWidget(self)
         layout = QFormLayout()

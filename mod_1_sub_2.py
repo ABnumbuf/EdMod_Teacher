@@ -21,11 +21,6 @@ class Window_1_2(QWidget):
         super().__init__(*args, **kwargs)
         self.setWindowTitle('Ё÷ѕ по схеме Ёль-√амал€: —оздание подписи')
         self.setFixedSize(700, 800)
-        qr = self.frameGeometry()
-        cp = QDesktopWidget().availableGeometry().center()
-        qr.moveCenter(cp)
-        self.move(qr.topLeft())
-        
         main_layout = QGridLayout(self)
         self.setLayout(main_layout)
         tab = QTabWidget(self)
@@ -69,7 +64,7 @@ class Window_1_2(QWidget):
         page_task = QWidget(self)
         layout_tsk = QFormLayout()
         page_task.setLayout(layout_tsk)
-        layout_tsk.addRow(QLabel('ѕроверка Ё÷ѕ Ёль-√амал€ по заданным значение'))
+        layout_tsk.addRow(QLabel('ѕроверка Ё÷ѕ Ёль-√амал€ по заданным значени€м'))
         self.v_tsk_p,self.v_tsk_g,self.v_tsk_x,self.v_tsk_m = get_task_val()
         self.task_text = QLabel(
                                 f'явл€еетс€ ли подпись правильной дл€: \np = {self.v_tsk_p}, \ng = {self.v_tsk_g}, \nx = {self.v_tsk_x}, \nm = {self.v_tsk_m}')
