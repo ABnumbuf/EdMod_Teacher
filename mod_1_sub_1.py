@@ -2,15 +2,25 @@
 
 from PyQt5.QtWidgets import * 
 from PyQt5.QtGui import *
-from util import read_text, get_random_message
+from PyQt5 import QtCore
+from util import read_text, get_prime_numbers_in_range, binary_pow
 import My_ElGamal as elg
+import random
+import sympy
 
-def get_task_val():
-    v_tsk_p = elg.get_prime_number_in_range(10, 100)
-    v_tsk_g = elg.get_primitive_root(v_tsk_p)
-    v_tsk_x = elg.get_prime_number_in_range(1, v_tsk_p - 1)
-    v_tsk_m = get_random_message(6)
-    return v_tsk_p,v_tsk_g,v_tsk_x,v_tsk_m
+def get_val_tsk_1():
+    p_a = random.randint(1000, 1100)
+    p_b = p_a + random.randint(300, 500)
+    return p_a, p_b
+
+def get_val_tsk_2():
+    return elg.get_prime_number_in_range(20, 300)
+
+def get_val_tsk_3():
+    p = elg.get_prime_number_in_range(1000, 1100)
+    g = elg.get_primitive_root(p)
+    x = elg.get_prime_number_in_range(1, p - 1)
+    return p, g, x
 
 
 class Window_1_1(QWidget):
@@ -19,7 +29,6 @@ class Window_1_1(QWidget):
         super().__init__(*args, **kwargs)
         self.setWindowTitle('ЭЦП по схеме Эль-Гамаля: Генерация ключей')
         self.setFixedSize(700, 800)
-        # self.setStyleSheet('background-color: #333232; color: #FFFFEB;')
         main_layout = QGridLayout(self)
         self.setLayout(main_layout)
         tab = QTabWidget(self)
@@ -49,13 +58,13 @@ class Window_1_1(QWidget):
         page_ex_1.setLayout(layout_ex_1)
         layout_ex_1.addWidget(QLabel('Нахождение простых чисел в диапазоне значений'),0,0,1,3)
         layout_ex_1.addWidget(QLabel('Введи диапазон значений:'),1,0)
-        self.inp_ex_lb = QLineEdit()
-        self.inp_ex_rb = QLineEdit()
+        self.inp_ex_1_lb = QLineEdit()
+        self.inp_ex_1_rb = QLineEdit()
         btn_ex_1 = QPushButton("Решить")
-        # btn_ex_1.clicked.connect(self.click_btn_ex)
+        btn_ex_1.clicked.connect(self.click_btn_ex_1)
         self.outp_ex_1 = QTextBrowser()
-        layout_ex_1.addWidget(self.inp_ex_lb,1,1)
-        layout_ex_1.addWidget(self.inp_ex_rb,1,2)
+        layout_ex_1.addWidget(self.inp_ex_1_lb,1,1)
+        layout_ex_1.addWidget(self.inp_ex_1_rb,1,2)
         layout_ex_1.addWidget(btn_ex_1,2,0,1,3)
         layout_ex_1.addWidget(QLabel('Результат:'),3,0,1,3)
         layout_ex_1.addWidget(self.outp_ex_1,4,0,1,3)
@@ -68,7 +77,7 @@ class Window_1_1(QWidget):
         layout_ex_2.addWidget(QLabel('Введи число:'),1,0)
         self.inp_ex_root = QLineEdit()
         btn_ex_2 = QPushButton("Решить")
-        # btn_ex_2.clicked.connect(self.click_btn_ex)
+        btn_ex_2.clicked.connect(self.click_btn_ex_2)
         self.outp_ex_2 = QTextBrowser()
         layout_ex_2.addWidget(self.inp_ex_root,1,1)
         layout_ex_2.addWidget(btn_ex_2,2,0,1,3)
@@ -87,7 +96,7 @@ class Window_1_1(QWidget):
         self.inp_ex_x = QLineEdit()
         self.inp_ex_p = QLineEdit()
         btn_ex_3 = QPushButton("Решить")
-        # btn_ex_3.clicked.connect(self.click_btn_ex)
+        btn_ex_3.clicked.connect(self.click_btn_ex_3)
         self.outp_ex_3 = QTextBrowser()
         layout_ex_3.addWidget(QLabel('g = '),2,0)
         layout_ex_3.addWidget(QLabel('x = '),3,0)
@@ -113,56 +122,78 @@ class Window_1_1(QWidget):
         tab_tsk.setTabPosition(QTabWidget.East)
 
         page_tsk_1 = QWidget(self)
-
         layout_tsk_1 = QGridLayout()
         page_tsk_1.setLayout(layout_tsk_1)
-        layout_tsk_1.addWidget(QLabel('Нахождение простых чисел в диапазоне значений'),0,0,1,3)
-        layout_tsk_1.addWidget(QLabel('Введи диапазон значений:'),1,0)
-        self.inp_tsk_lb = QLineEdit()
-        self.inp_tsk_rb = QLineEdit()
+
+        self.v_tsk_1_p_a, self.v_tsk_1_p_b = get_val_tsk_1()
+        self.w_tsk_1_text = QLabel(
+            f'\nНайди простое число на промежутке [{self.v_tsk_1_p_a}, {self.v_tsk_1_p_b}]\n')
+        self.w_tsk_1_text.setAlignment(QtCore.Qt.AlignCenter)
+        self.inp_tsk_1 = QLineEdit()
         btn_tsk_1_chk = QPushButton("Решить")
-        # btn_tsk_1_chk.clicked.connect(self.click_btn_tsk_1_chk)
+        btn_tsk_1_chk.clicked.connect(self.click_btn_tsk_1_chk)
+        btn_tsk_1_rst = QPushButton("Обновить")
+        btn_tsk_1_rst.clicked.connect(self.click_btn_tsk_1_rst)
         self.outp_tsk_1 = QTextBrowser()
-        layout_tsk_1.addWidget(self.inp_tsk_lb,1,1)
-        layout_tsk_1.addWidget(self.inp_tsk_rb,1,2)
-        layout_tsk_1.addWidget(btn_tsk_1_chk,2,0,1,3)
-        layout_tsk_1.addWidget(QLabel('Результат:'),3,0,1,3)
-        layout_tsk_1.addWidget(self.outp_tsk_1,4,0,1,3)
+
+        layout_tsk_1.addWidget(QLabel('Нахождение простых чисел в диапазоне значений'),0,0,1,3)
+        layout_tsk_1.addWidget(self.w_tsk_1_text,1,0,3,3)
+        layout_tsk_1.addWidget(QLabel('Введи ответ:'),4,0)
+        layout_tsk_1.addWidget(self.inp_tsk_1,4,1)
+        layout_tsk_1.addWidget(btn_tsk_1_chk,5,0,1,3)
+        layout_tsk_1.addWidget(btn_tsk_1_rst,6,0,1,3)
+        layout_tsk_1.addWidget(QLabel('Результат:'),7,0,1,3)
+        layout_tsk_1.addWidget(self.outp_tsk_1,8,0,1,3)
 
         page_tsk_2 = QWidget(self)
-
         layout_tsk_2 = QGridLayout()
         page_tsk_2.setLayout(layout_tsk_2)
-        layout_tsk_2.addWidget(QLabel('Нахождение первообразных корней числа'),0,0,1,3)
-        layout_tsk_2.addWidget(QLabel('Введи число:'),1,0)
-        self.inp_tsk_root = QLineEdit()
+
+        self.v_tsk_2 = get_val_tsk_2()
+        self.w_tsk_2_text = QLabel(
+            f'\nНайди первообразный корень числа {self.v_tsk_2}\n')
+        self.w_tsk_2_text.setAlignment(QtCore.Qt.AlignCenter)
+        self.inp_tsk_2 = QLineEdit()
         btn_tsk_2_chk = QPushButton("Решить")
-        # btn_tsk_2_chk.clicked.connect(self.click_btn_tsk_2_chk)
+        btn_tsk_2_chk.clicked.connect(self.click_btn_tsk_2_chk)
+        btn_tsk_2_rst = QPushButton("Обновить")
+        btn_tsk_2_rst.clicked.connect(self.click_btn_tsk_2_rst)
         self.outp_tsk_2 = QTextBrowser()
-        layout_tsk_2.addWidget(self.inp_tsk_root,1,1)
-        layout_tsk_2.addWidget(btn_tsk_2_chk,2,0,1,3)
-        layout_tsk_2.addWidget(QLabel('Результат:'),3,0,1,3)
-        layout_tsk_2.addWidget(self.outp_tsk_2,4,0,1,3)
+
+        layout_tsk_2.addWidget(QLabel('Нахождение первообразных корней числа'),0,0,1,3)
+        layout_tsk_2.addWidget(self.w_tsk_2_text,1,0,3,3)
+        layout_tsk_2.addWidget(QLabel('Введи число:'),4,0)
+        layout_tsk_2.addWidget(self.inp_tsk_2,4,1)
+        layout_tsk_2.addWidget(btn_tsk_2_chk,5,0,1,3)
+        layout_tsk_2.addWidget(btn_tsk_2_rst,6,0,1,3)
+        layout_tsk_2.addWidget(QLabel('Результат:'),7,0,1,3)
+        layout_tsk_2.addWidget(self.outp_tsk_2,8,0,1,3)
 
         page_tsk_3 = QWidget(self)
-
         layout_tsk_3 = QGridLayout()
         page_tsk_3.setLayout(layout_tsk_3)
-        layout_tsk_3.addWidget(QLabel(\
-            '<p>Нахождение y &#8801; g<sup>x</sup> (mod p)</p>')\
-            ,0,0,1,2)
-        layout_tsk_3.addWidget(QLabel('Введи ответ: y = '),2,0)
-        self.inp_tsk_y = QLineEdit()
+
+        self.v_tsk_3_p, self.v_tsk_3_g, self.v_tsk_3_x = get_val_tsk_3()
+        self.w_tsk_3_text = QLabel(
+            f'<p>Найди y &#8801; {self.v_tsk_3_g}<sup>{self.v_tsk_3_x}</sup> (mod {self.v_tsk_3_p})</p><p></p>')
+        self.w_tsk_3_text.setAlignment(QtCore.Qt.AlignCenter)
+        self.inp_tsk_3 = QLineEdit()
         btn_tsk_3_chk = QPushButton("Решить")
-        # btn_tsk_3_chk.clicked.connect(self.click_btn_tsk_2_chk)
+        btn_tsk_3_chk.clicked.connect(self.click_btn_tsk_3_chk)
         btn_tsk_3_rst = QPushButton("Обновить")
-        # btn_tsk_3_rst.clicked.connect(self.click_btn_tsk_2_rst)
+        btn_tsk_3_rst.clicked.connect(self.click_btn_tsk_3_rst)
         self.outp_tsk_3 = QTextBrowser()
-        layout_tsk_3.addWidget(self.inp_tsk_y,2,1)
-        layout_tsk_3.addWidget(btn_tsk_3_chk,3,0)
-        layout_tsk_3.addWidget(btn_tsk_3_rst,3,1)
-        layout_tsk_3.addWidget(QLabel('Результат:'),4,0,1,2)
-        layout_tsk_3.addWidget(self.outp_tsk_3,5,0,1,2)
+
+        layout_tsk_3.addWidget(QLabel(\
+            '<p>Нахождение y &#8801; g<sup>x</sup> (mod p)</p><p></p>')\
+            ,0,0,2,2)
+        layout_tsk_3.addWidget(self.w_tsk_3_text,2,0,2,2)
+        layout_tsk_3.addWidget(QLabel('Введи ответ: y = '),4,0)
+        layout_tsk_3.addWidget(self.inp_tsk_3,4,1)
+        layout_tsk_3.addWidget(btn_tsk_3_chk,5,0,1,3)
+        layout_tsk_3.addWidget(btn_tsk_3_rst,6,0,1,3)
+        layout_tsk_3.addWidget(QLabel('Результат:'),7,0,1,2)
+        layout_tsk_3.addWidget(self.outp_tsk_3,8,0,1,2)
 
         tab_tsk.addTab(page_tsk_1, '1')
         tab_tsk.addTab(page_tsk_2, '2')
@@ -176,37 +207,125 @@ class Window_1_1(QWidget):
         main_layout.addWidget(tab, 0, 0, 2, 1)
 
 
-    def click_btn_ex(self):
+    def click_btn_ex_1(self):
         try:
-            v_exmpl_m = str(self.inp_ex_m.text())
-            v_exmpl_p = int(self.inp_ex_p.text())
-            v_exmpl_g = int(self.inp_ex_g.text())
-            v_exmpl_x = int(self.inp_ex_x.text())
-            self.outp_ex.setText(elg.ds_ElGamal_outp(v_exmpl_m, v_exmpl_p, v_exmpl_g, v_exmpl_x))
-        except ValueError:
-            self.outp_ex.setText(f"Введи значения: \nm - строка \np, g, x - целые числa")
-    
-    def click_btn_tsk_chk(self):
-        try:
-            v_tsk_r = int(self.tsk_r.text())
-            v_tsk_s = int(self.tsk_s.text())
-            v_r, v_s = elg.ds_ElGamal(self.v_tsk_m, self.v_tsk_p, self.v_tsk_g, self.v_tsk_x)
-            if (v_tsk_r == v_r and v_tsk_s == v_s):
-                self.outp_tsk.setText(f"r = {v_tsk_r}\ns = {v_tsk_s}\nВерно")
-            else:
-                self.outp_tsk.setText(f"r = {v_tsk_r}\ns = {v_tsk_s}\nНеверно")
+            v_ex_1_lb = int(self.inp_ex_1_lb.text())
+            v_ex_1_rb = int(self.inp_ex_1_rb.text())
+            self.outp_ex_1.setText(
+                f"Простые числа в промежутке [{v_ex_1_lb}, {v_ex_1_rb}]:\n{str(get_prime_numbers_in_range(v_ex_1_lb, v_ex_1_rb))}")
+            self.inp_ex_1_lb.clear()
+            self.inp_ex_1_rb.clear()
             self.update()
         except ValueError:
-            self.outp_tsk.setText(f"Введи значения: \nr - целое число \ns - целое число")
+            self.outp_ex_1.setText(f"Введи значения: целые числa")
+            self.inp_ex_1_lb.clear()
+            self.inp_ex_1_rb.clear()
+            self.update()
 
-    def click_btn_tsk_rst(self):
+    def click_btn_ex_2(self):
         try:
-            self.v_tsk_p, self.v_tsk_g, self.v_tsk_x, self.v_tsk_m = get_task_val()
-            self.task_text.setText(
-                f'Являеется ли подпись правильной для: \np = {self.v_tsk_p}, g = {self.v_tsk_g}, x = {self.v_tsk_x}, m = {self.v_tsk_m}')
+            v_ex_root = int(self.inp_ex_root.text())
+            self.outp_ex_2.setText(
+                f"Первообразные корни числа {v_ex_root}:\n{elg.get_primitive_roots(v_ex_root)}")
+            self.inp_ex_root.clear()
+            self.update()
+        except ValueError:
+            self.outp_ex_2.setText(f"Введи значение: \nцелое простое число")
+            self.inp_ex_root.clear()
+            self.update()
+
+    def click_btn_ex_3(self):
+        try:
+            v_ex_g = int(self.inp_ex_g.text())
+            v_ex_x = int(self.inp_ex_x.text())
+            v_ex_p = int(self.inp_ex_p.text())
+            self.outp_ex_3.setText(
+                f"<p>{binary_pow(v_ex_g, v_ex_x, v_ex_p)} &#8801; {v_ex_g}<sup>{v_ex_x}</sup> (mod {v_ex_p})</p>")
+            self.inp_ex_g.clear()
+            self.inp_ex_x.clear()
+            self.inp_ex_p.clear()
+            self.update()
+        except ValueError:
+            self.outp_ex_3.setText(f"Введи значения: \np, g, x - целые числa")
+            self.inp_ex_g.clear()
+            self.inp_ex_x.clear()
+            self.inp_ex_p.clear()
+            self.update()
+    
+    def click_btn_tsk_1_chk(self):
+        try:
+            v_tsk = int(self.inp_tsk_1.text())
+            if (v_tsk > self.v_tsk_1_p_a and v_tsk < self.v_tsk_1_p_b and sympy.isprime(v_tsk)):
+                self.outp_tsk_1.setText(f"Число {v_tsk} является простым на промежутке [{self.v_tsk_1_p_a}, {self.v_tsk_1_p_b}]\nВерно")
+            else:
+                self.outp_tsk_1.setText(f"Число {v_tsk} не является простым на промежутке [{self.v_tsk_1_p_a}, {self.v_tsk_1_p_b}]\nНеверно")
+            self.inp_tsk_1.clear()
+            self.update()
+        except ValueError:
+            self.outp_tsk_1.setText(f"Введи значение: \nцелое число")
+            self.inp_tsk_1.clear()
+            self.update()
+
+    def click_btn_tsk_1_rst(self):
+        try:
+            self.v_tsk_1_p_a, self.v_tsk_1_p_b = get_val_tsk_1()
+            self.w_tsk_1_text.setText(
+                f'\nНайди простое число на промежутке [{self.v_tsk_1_p_a}, {self.v_tsk_1_p_b}]\n')
+            self.outp_tsk_1.setText(f"")
+            self.inp_tsk_1.clear()
             self.update()
         except ValueError:
             print(ValueError)
+
+    def click_btn_tsk_2_chk(self):
+        try:
+            v_tsk = int(self.inp_tsk_2.text())
+            if (v_tsk in elg.get_primitive_roots(self.v_tsk_2)):
+                self.outp_tsk_2.setText(f"Число {v_tsk} является первообразным корнем числа {self.v_tsk_2}\nВерно")
+            else:
+                self.outp_tsk_2.setText(f"Число {v_tsk} не является первообразным корнем числа {self.v_tsk_2}\nНеверно")
+            self.inp_tsk_2.clear()
+            self.update()
+        except ValueError:
+            self.outp_tsk_2.setText(f"Введи значение: \nцелое число")
+            self.inp_tsk_2.clear()
+            self.update()
+
+    def click_btn_tsk_2_rst(self):
+        try:
+            self.v_tsk_2 = get_val_tsk_2()
+            self.w_tsk_2_text.setText(
+                f'\nНайди первообразный корень числа {self.v_tsk_2}\n')
+            self.outp_tsk_2.setText(f"")
+            self.inp_tsk_2.clear()
+            self.update()
+        except ValueError:
+            print(ValueError)
+    
+    def click_btn_tsk_3_chk(self):
+        try:
+            v_tsk = int(self.inp_tsk_3.text())
+            if (v_tsk == binary_pow(self.v_tsk_3_g, self.v_tsk_3_x, self.v_tsk_3_p)):
+                self.outp_tsk_3.setText(f"<p>{v_tsk} &#8801; {self.v_tsk_3_g}<sup>{self.v_tsk_3_x}</sup> (mod {self.v_tsk_3_p})</p><p>Верно</p>")
+            else:
+                self.outp_tsk_3.setText(f"<p>{v_tsk} &#8800; {self.v_tsk_3_g}<sup>{self.v_tsk_3_x}</sup> (mod {self.v_tsk_3_p})</p><p>Неверно</p>")
+            self.inp_tsk_3.clear()
+            self.update()
+        except ValueError:
+            self.outp_tsk_3.setText(f"Введи значение: \nцелое число")
+
+    def click_btn_tsk_3_rst(self):
+        try:
+            self.v_tsk_3_g, self.v_tsk_3_x, self.v_tsk_3_p= get_val_tsk_3()
+            self.w_tsk_3_text.setText(
+                f'<p>Найди y &#8801; {self.v_tsk_3_g}<sup>{self.v_tsk_3_x}</sup> (mod {self.v_tsk_3_p})</p><p></p>')
+            self.outp_tsk_3.setText(f"")
+            self.inp_tsk_3.clear()
+            self.update()
+        except ValueError:
+            print(ValueError)
+            self.inp_tsk_3.clear()
+            self.update()
 
 
 def win_1_1(w):

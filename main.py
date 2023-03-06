@@ -28,7 +28,7 @@ class MainWindow(QWidget):
         super().__init__(*args, **kwargs)
 
         self.setWindowTitle('EdMod')
-        self.setFixedSize(725, 300)
+        self.setFixedSize(650, 250)
         self.setFont(QFont('Arial', 12))
         main_layout = QGridLayout(self)
         self.setLayout(main_layout)
@@ -45,12 +45,12 @@ class MainWindow(QWidget):
         self.cmb.addItems(mods)
         self.btn = QPushButton("Далее")
         self.btn.clicked.connect(self.click_btn)
-        self.btn.setFixedSize(100, 35)
+        self.btn.setFixedSize(100, 26)
         main_layout.addWidget(lb1, 0, 0, 1, 2)
         main_layout.addWidget(lb2, 1, 0, 1, 2)
         main_layout.addWidget(self.lb3, 2, 0, 1, 2)
-        main_layout.addWidget(self.cmb, 3, 0, 2, 1)
-        main_layout.addWidget(self.btn, 3, 1)
+        main_layout.addWidget(self.cmb, 3, 0, QtCore.Qt.AlignBottom)
+        main_layout.addWidget(self.btn, 3, 1, QtCore.Qt.AlignBottom)
 
 
     def click_btn(self):
@@ -89,18 +89,19 @@ class MainWindow(QWidget):
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
+
     app.setStyle('Fusion')
 
     dark_palette = QtGui.QPalette()
     dark_palette.setColor(QtGui.QPalette.Background, QtGui.QColor(51, 50, 50))
-    dark_palette.setColor(QtGui.QPalette.Base, QtGui.QColor(61, 60, 60))
+    dark_palette.setColor(QtGui.QPalette.Base, QtGui.QColor(91, 90, 90))
     dark_palette.setColor(QtGui.QPalette.WindowText, QtGui.QColor(255, 255, 235))
     dark_palette.setColor(QtGui.QPalette.BrightText, QtGui.QColor(255, 255, 235))
     dark_palette.setColor(QtGui.QPalette.Text, QtGui.QColor(255, 255, 235))
-    dark_palette.setColor(QtGui.QPalette.Button, QtGui.QColor(255, 218, 133))
+    dark_palette.setColor(QtGui.QPalette.Button, QtGui.QColor(255, 203, 105))
     dark_palette.setColor(QtGui.QPalette.ButtonText, QtGui.QColor(31, 30, 30))
-    dark_palette.setColor(QtGui.QPalette.Highlight, QtGui.QColor(255, 218, 133))
-    dark_palette.setColor(QtGui.QPalette.HighlightedText, QtGui.QColor(31, 30, 30))
+    dark_palette.setColor(QtGui.QPalette.Highlight, QtGui.QColor(71, 70, 70))
+    dark_palette.setColor(QtGui.QPalette.HighlightedText, QtGui.QColor(255, 203, 105))
 
     # app.setPalette(dark_palette)
 

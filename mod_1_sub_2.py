@@ -67,7 +67,7 @@ class Window_1_2(QWidget):
         layout_tsk.addRow(QLabel('Проверка ЭЦП Эль-Гамаля по заданным значениям'))
         self.v_tsk_p,self.v_tsk_g,self.v_tsk_x,self.v_tsk_m = get_task_val()
         self.task_text = QLabel(
-                                f'Являеется ли подпись правильной для: \np = {self.v_tsk_p}, \ng = {self.v_tsk_g}, \nx = {self.v_tsk_x}, \nm = {self.v_tsk_m}')
+                                f'Найди значения подписи для: \np = {self.v_tsk_p}, \ng = {self.v_tsk_g}, \nx = {self.v_tsk_x}, \nm = {self.v_tsk_m}')
         self.task_text.setAlignment(QtCore.Qt.AlignCenter)
         self.task_text.setFixedSize(620, 160)
         self.inp_tsk_r = QLineEdit()
@@ -102,9 +102,17 @@ class Window_1_2(QWidget):
             v_exmpl_g = int(self.inp_ex_g.text())
             v_exmpl_x = int(self.inp_ex_x.text())
             self.outp_ex.setText(elg.ds_ElGamal_outp(v_exmpl_m, v_exmpl_p, v_exmpl_g, v_exmpl_x))
+            self.inp_ex_m.clear()
+            self.inp_ex_g.clear()
+            self.inp_ex_x.clear()
+            self.inp_ex_p.clear()
             self.update()
         except ValueError:
             self.outp_ex.setText(f"Введи значения: \nm - строка \np, g, x - целые числa")
+            self.inp_ex_m.clear()
+            self.inp_ex_g.clear()
+            self.inp_ex_x.clear()
+            self.inp_ex_p.clear()
             self.update()
     
     def click_btn_tsk_chk(self):
@@ -113,19 +121,26 @@ class Window_1_2(QWidget):
             v_tsk_s = int(self.inp_tsk_s.text())
             v_r, v_s = elg.ds_ElGamal(self.v_tsk_m, self.v_tsk_p, self.v_tsk_g, self.v_tsk_x)
             if (v_tsk_r == v_r and v_tsk_s == v_s):
-                self.outp_tsk.setText(f"r = {v_tsk_r}\ns = {v_tsk_s}\nВерно")
+                self.outp_tsk.setText(f"Числа <{v_tsk_r}, {v_tsk_s}> являются подписью для:\np = {self.v_tsk_p}, \ng = {self.v_tsk_g}, \nx = {self.v_tsk_x}, \nm = {self.v_tsk_m}\nВерно")
             else:
-                self.outp_tsk.setText(f"r = {v_tsk_r}\ns = {v_tsk_s}\nНеверно")
+                self.outp_tsk.setText(f"Числа <{v_tsk_r}, {v_tsk_s}> не являются подписью для:\np = {self.v_tsk_p}, \ng = {self.v_tsk_g}, \nx = {self.v_tsk_x}, \nm = {self.v_tsk_m}\nНеверно")
+            self.inp_tsk_r.clear()
+            self.inp_tsk_s.clear()
             self.update()
         except ValueError:
             self.outp_tsk.setText(f"Введи значения: \nr - целое число \ns - целое число")
+            self.inp_tsk_r.clear()
+            self.inp_tsk_s.clear()
             self.update()
 
     def click_btn_tsk_rst(self):
         try:
             self.v_tsk_p, self.v_tsk_g, self.v_tsk_x, self.v_tsk_m = get_task_val()
             self.task_text.setText(
-                f'Являеется ли подпись правильной для: \np = {self.v_tsk_p}, \ng = {self.v_tsk_g}, \nx = {self.v_tsk_x}, \nm = {self.v_tsk_m}')
+                f'Найди значения подписи для: \np = {self.v_tsk_p}, \ng = {self.v_tsk_g}, \nx = {self.v_tsk_x}, \nm = {self.v_tsk_m}')
+            self.inp_tsk_r.clear()
+            self.inp_tsk_s.clear()
+            self.outp_tsk.setText(f"")
             self.update()
         except ValueError:
             print(ValueError)

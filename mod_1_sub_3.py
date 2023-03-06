@@ -109,6 +109,12 @@ class Window_1_3(QWidget):
             self.update()
         except ValueError:
             self.outp_ex.setText(f"¬веди значени€: \nm - строка \np, g, y, r, s - целые числa")
+            self.inp_ex_m.clear()
+            self.inp_ex_p.clear()
+            self.inp_ex_g.clear()
+            self.inp_ex_r.clear()
+            self.inp_ex_s.clear()
+            self.inp_ex_y.clear()
             self.update()
     
     def click_btn_tsk_chk(self):
@@ -124,7 +130,7 @@ class Window_1_3(QWidget):
                     f"p = {self.v_tsk_p}, g = {self.v_tsk_g}, y = {self.v_tsk_y}, \nm = {self.v_tsk_m}, \nr = {self.v_tsk_r}, s = {self.v_tsk_s}\nЌеверно")
             self.update()
         except ValueError:
-            self.outp_tsk.setText(f"¬вери ответ")
+            self.outp_tsk.setText(f"¬веди ответ")
             self.update()
 
     def click_btn_tsk_rst(self):
@@ -132,6 +138,7 @@ class Window_1_3(QWidget):
             self.v_tsk_m, self.v_tsk_p, self.v_tsk_g, self.v_tsk_y, self.v_tsk_r, self.v_tsk_s = get_task_val()
             self.task_text.setText(
                 f'явл€еетс€ ли подпись правильной дл€: \np = {self.v_tsk_p}, g = {self.v_tsk_g}, y = {self.v_tsk_y}, \nm = {self.v_tsk_m}, \nr = {self.v_tsk_r}, s = {self.v_tsk_s}')
+            self.outp_tsk.setText(f"")
             self.update()
         except ValueError:
             print(ValueError)

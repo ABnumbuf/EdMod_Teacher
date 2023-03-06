@@ -73,18 +73,19 @@ def ds_ElGamal_outp(m: str, p: int, g: int, x: int) -> str:
     # Создает ЦП Эль-Гамаля сообщения m
     #
     outp = []
+    outp.append(f'Создание подписи <r, s> для: m = {m}, p = {p}, g = {g}, x = {x}\n')
     h = my_hash(m, p)
-    outp.append(f'h = h(m) = {h}\n')
+    outp.append(f'h = h(m) = h({m}) = {h}\n')
     k = get_coprime_in_range(1, p - 1, p - 1)
-    outp.append(f'k = {k}\n')
+    outp.append(f'1 < k < p - 1 \n1 < k < {p-1} \nk = {k}\n')
     r = binary_pow(g, k, p)
-    outp.append(f'r = g^k (mod p) = {r}\n')
+    outp.append(f'r = g^k (mod p) = {g}^{k} (mod {p}) = {r}\n')
     u = binary_pow((h - x * r), 1, p - 1)
-    outp.append(f'u = (h - x * r) (mod p-1) = {u}\n')
+    outp.append(f'u = (h - x * r) (mod p-1) = ({h} - {x} * {r}) (mod {p-1}) = {u}\n')
     k_inv = 9  # modular_inv(k, p - 1)
     outp.append(f'k^-1 = {k_inv}\n')
     s = binary_pow((u * k_inv), 1, p - 1)
-    outp.append(f's = k^-1 * u (mod p-1) = {s}\n')
+    outp.append(f's = k^-1 * u (mod p-1) = {k_inv} * {u} (mod {p-1}) = {s}\n')
     outp.append(f"Подпись: <{r},{s}>\n")
     # outp.reverse()
     res = "".join(outp)
@@ -110,6 +111,7 @@ def check_ds_ElGamal_outp(m: str, r: int, s: int,
     # Проверяет ЦП Эль-Гамаля сообщения m
     #
     outp2 = []
+    outp2.append(f"Проверка подписи <{r}, {s}> для: m = {m}, p = {p}, g = {g}, y = {y}\n")
     if (r < 0 or r > p):
         outp2.append(f"Число r = {r} некорректно.\n")
         res = "".join(outp2)
@@ -120,11 +122,11 @@ def check_ds_ElGamal_outp(m: str, r: int, s: int,
         return res
 
     h = my_hash(m, p)
-    outp2.append(f'h = h(m) = {h}\n')
+    outp2.append(f'h = h(m) = h({m}) = {h}\n')
     left = binary_pow(binary_pow(y, r, p) * binary_pow(r, s, p), 1, p)
-    outp2.append(f'y^r * r^s = {left} (mod p)\n')
+    outp2.append(f'y^r * r^s (mod p) = {y}^{r} * {r}^{s} (mod {p}) = {left} \n')
     right = binary_pow(g, h, p)
-    outp2.append(f'g^h (mod p) = {right}\n')
+    outp2.append(f'g^h (mod p) = {g}^{h} (mod {p}) = {right}\n')
     if (left == right):
         outp2.append(f'{left} = {right}\n')
         outp2.append('Подпись подлинна.\n')

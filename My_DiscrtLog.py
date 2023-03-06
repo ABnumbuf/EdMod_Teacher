@@ -69,31 +69,35 @@ def coherence_method(a: int, b: int, n: int) -> int:
 
 
 def coherence_method_output(a: int, b: int, n: int) -> str:
-    # Вывод решения метода Согласования
+    # Вывод решения ЗДЛ методом согласования
     #
     output1 = []
+    output1.append(f'Решение задачи {a}^x = {b} (mod {n}) методом согласования\n')
     # Находим порядок числа a по модулю n
     ord_na = my_ord(a, n)
-    output1.append(f'ord({a}) = {ord_na}\n')
+    output1.append(f'ord(a) = ord({a}) = {ord_na}\n')
     # Находим h, округляя до большего целого корень из n
     h = ceil(sqrt(ord_na))
-    output1.append(f'h({n}) = {h}\n')
+    output1.append(f'h = h(n) = h({n}) = {h}\n')
+    output1.append(f'Находим все b*a^t (mod n) для t = 0, ..., h - 1 = 0, ..., {h-1}\n')
     # Создаем список для хранения значений b*a^t (mod n), t = 0, ..., h - 1
     tList = [(b * binary_pow(a, t, n)) % n for t in range(h)]
     t = 0
     for i in tList:
         output1.append(f'{b}*{a}^{t} (mod {n}) = {i}\n')
         t += 1
+    output1.append(f'l = 1, ..., h = 1, ..., {h}\n')
     # Вычисляем значений величины (a^h)^l (mod n), l = 1, ..., h и
     # сравниваем с значениями в списке
+    output1.append(f'Считаем a^h^l (mod n) до тех пор \n     пока a^h^l не равно какому-либо значению из списка b*a^t (mod n)\n')
     for l in range(1, h + 1):
         temp = binary_pow(a, h * l, n)
-        output1.append(f'{a}^{h}^{l} (mod {n}) = {l}\n')
+        output1.append(f'a^h^l (mod n) = {a}^{h}^{l} (mod {n}) = {temp}\n')
         for t in range(h):
             # Если значения равны, то возвращаем x = h * l - t
             if temp == tList[t]:
-                output1.append(f'{temp} = {tList[t]}\n')
-                output1.append(f'x = {h}*{l} - {t} = {h * l - t}\n')
+                output1.append(f'a^h^l (mod n) = b*a^t (mod n) = {tList[t]} при h = {h}, l = {l}, t = {t}\n')
+                output1.append(f'x = h*l - t = {h}*{l} - {t} = {h * l - t}\n')
                 res = "".join(output1)
                 return res
 
@@ -118,28 +122,33 @@ def sylvester_pohlig_hellman_method(a: int, b: int, p: int) -> int:
 
 
 def sylvester_pohlig_hellman_method_output(
-        a: int, b: int, p: int) -> str:
-    # Вывод решения метода Сильвестра-Полига-Хеллмана
+        a: int, b: int, n: int) -> str:
+    # Вывод решения ЗДЛ методом Сильвестра-Полига-Хеллмана
     #
     output2 = []
+    output2.append(f'Решение задачи {a}^x = {b} (mod {n}) методом Сильвестра-Полига-Хелмана\n')
     # Находим порядок числа а по модулю p
-    ord_pa = my_ord(a, p)
-    output2.append(f'h({p}) = {ord_pa}\n')
+    ord_pa = my_ord(a, n)
+    output2.append(f'h = h(n) = h({n}) = {ord_pa}\n')
     # Находим p_i^alpha_i
     factors = factorize(ord_pa)
-    output2.append(f'{p}  = {factors}\n')
+    factors.sort()
+    output2.append(f'Раскладываем h = {ord_pa} на множители\n')
+    output2.append(f'{ord_pa}  = {factors}\n')
     # Находим mu_i = ord(a, p) / p_i^alpha_i
     mu = [ord_pa // factor for factor in factors]
+    output2.append(f'mu_i = ord(a, n) / n_i^alpha_i\n')
     for i in factors:
         output2.append(
             f'mu_{factors.index(i)} = {ord_pa} / {i}  = {mu[factors.index(i)]}\n')
     # Находим x_i
-    x = [coherence_method(binary_pow(a, mu_i, p),
-                          binary_pow(b, mu_i, p), p) for mu_i in mu]
+    x = [coherence_method(binary_pow(a, mu_i, n),
+                          binary_pow(b, mu_i, n), n) for mu_i in mu]
     for j in mu:
         output2.append(
-            f'x_{mu.index(j)} = log{binary_pow(a, j, p)} ({binary_pow(b, j, p)}) = {x[mu.index(j)]}\n')
+            f'x_{mu.index(j)} = log{binary_pow(a, j, n)} ({binary_pow(b, j, n)}) = {x[mu.index(j)]}\n')
     # Находим x используя китайскую теорему об остатках
+    output2.append(f'Находим x используя китайскую теорему об остатках:\n')
     x = chineese_remainder_theorem(x, factors)
     output2.append(f'x = {x}\n')
     res = "".join(output2)
