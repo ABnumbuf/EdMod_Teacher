@@ -8,13 +8,10 @@ from util import read_text, get_random_message
 import My_ElGamal as elg
 
 def get_task_val():
-    v_tsk_y, v_tsk_p, v_tsk_g, v_tsk_x = elg.get_keys_ElGamal(10, 100)
-    flag = random.randint(0, 1)
-    if (flag):
-        v_tsk_x = v_tsk_p + 6
-    v_tsk_m = get_random_message(6)
-    v_tsk_r, v_tsk_s = elg.ds_ElGamal(v_tsk_m, v_tsk_p, v_tsk_g, v_tsk_x)
-    return v_tsk_m, v_tsk_p, v_tsk_g, v_tsk_y, v_tsk_r, v_tsk_s
+    y, p, g, x = elg.get_keys_ElGamal(10, 100)
+    m = get_random_message(6)
+    r, s = elg.ds_ElGamal(m, p, g, x)
+    return m, p, g, y, r, s
 
 class Window_1_3(QWidget):
 
@@ -26,6 +23,7 @@ class Window_1_3(QWidget):
         main_layout = QGridLayout(self)
         self.setLayout(main_layout)
         tab = QTabWidget(self)
+        tab.setFont(QFont('Arial', 12))
         # Page Theory
         page_text = QWidget(self)
         layout = QFormLayout()
@@ -39,10 +37,9 @@ class Window_1_3(QWidget):
         layout.addRow(scrollArea)
         # Page Example
         page_example = QWidget(self)
-        layout_ex = QFormLayout()
+        layout_ex = QGridLayout()
         page_example.setLayout(layout_ex)
-        layout_ex.addRow(QLabel('Валидация ЭЦП по схеме Эль-Гамаля по введенным значениям'))
-        layout_ex.addRow(QLabel('Введи значения:'))
+        
         self.inp_ex_m = QLineEdit()
         self.inp_ex_p = QLineEdit()
         self.inp_ex_g = QLineEdit()
@@ -52,31 +49,39 @@ class Window_1_3(QWidget):
         btn_ex = QPushButton("Решить")
         btn_ex.clicked.connect(self.click_btn_ex)
         self.outp_ex = QTextBrowser()
-        self.inp_ex_m.setFixedSize(620, 20)
-        self.inp_ex_p.setFixedSize(620, 20)
-        self.inp_ex_g.setFixedSize(620, 20)
-        self.inp_ex_y.setFixedSize(620, 20)
-        self.inp_ex_r.setFixedSize(620, 20)
-        self.inp_ex_s.setFixedSize(620, 20)
-        layout_ex.addRow(QLabel('m = '), self.inp_ex_m)
-        layout_ex.addRow(QLabel('p = '), self.inp_ex_p)
-        layout_ex.addRow(QLabel('g = '), self.inp_ex_g)
-        layout_ex.addRow(QLabel('y = '), self.inp_ex_y)
-        layout_ex.addRow(QLabel('r = '), self.inp_ex_r)
-        layout_ex.addRow(QLabel('s = '), self.inp_ex_s)
-        layout_ex.addRow(btn_ex)
-        layout_ex.addRow(QLabel('Результат:'))
-        layout_ex.addRow(self.outp_ex)
+        # self.inp_ex_m.setFixedSize(620, 20)
+        # self.inp_ex_p.setFixedSize(620, 20)
+        # self.inp_ex_g.setFixedSize(620, 20)
+        # self.inp_ex_y.setFixedSize(620, 20)
+        # self.inp_ex_r.setFixedSize(620, 20)
+        # self.inp_ex_s.setFixedSize(620, 20)
+        layout_ex.addWidget(QLabel('Валидация ЭЦП по схеме Эль-Гамаля по введенным значениям'),0,0,1,4)
+        layout_ex.addWidget(QLabel('Введи значения:'),1,0,1,4)
+        layout_ex.addWidget(QLabel('m = '), 2,0)
+        layout_ex.addWidget(QLabel('p = '), 2,2)
+        layout_ex.addWidget(QLabel('g = '), 3,0)
+        layout_ex.addWidget(QLabel('y = '), 3,2)
+        layout_ex.addWidget(QLabel('r = '), 4,0)
+        layout_ex.addWidget(QLabel('s = '), 4,2)
+        layout_ex.addWidget(self.inp_ex_m, 2,1)
+        layout_ex.addWidget(self.inp_ex_p, 2,3)
+        layout_ex.addWidget(self.inp_ex_g, 3,1)
+        layout_ex.addWidget(self.inp_ex_y, 3,3)
+        layout_ex.addWidget(self.inp_ex_r, 4,1)
+        layout_ex.addWidget(self.inp_ex_s, 4,3)
+        layout_ex.addWidget(btn_ex,5,0,1,4)
+        layout_ex.addWidget(QLabel('Результат:'),6,0,1,4)
+        layout_ex.addWidget(self.outp_ex,7,0,1,4)
         # Page Task
         page_task = QWidget(self)
         layout_tsk = QFormLayout()
         page_task.setLayout(layout_tsk)
         layout_tsk.addRow(QLabel('Проверка валидации ЭЦП Эль-Гамаля по заданным значениям'))
         self.v_tsk_m, self.v_tsk_p, self.v_tsk_g, self.v_tsk_y, self.v_tsk_r, self.v_tsk_s = get_task_val()
-        self.task_text = QLabel(
+        self.w_tsk_text = QLabel(
             f'Являеется ли подпись правильной для: \np = {self.v_tsk_p}, g = {self.v_tsk_g}, y = {self.v_tsk_y}, \nm = {self.v_tsk_m}, \nr = {self.v_tsk_r}, s = {self.v_tsk_s}')
-        self.task_text.setAlignment(QtCore.Qt.AlignCenter)
-        self.task_text.setFixedSize(620, 160)
+        self.w_tsk_text.setAlignment(QtCore.Qt.AlignCenter)
+        self.w_tsk_text.setFixedSize(620, 160)
         self.inp_tsk = QComboBox()
         self.inp_tsk.addItems(['Подпись подлина', 'Подпись подделана'])
         btn_tsk_chk = QPushButton("Проверить")
@@ -84,7 +89,7 @@ class Window_1_3(QWidget):
         self.outp_tsk = QTextBrowser()
         btn_tsk_chk.clicked.connect(self.click_btn_tsk_chk)
         btn_tsk_rst.clicked.connect(self.click_btn_tsk_rst)
-        layout_tsk.addRow(self.task_text)
+        layout_tsk.addRow(self.w_tsk_text)
         layout_tsk.addRow(QLabel('Выбери:'), self.inp_tsk)
         layout_tsk.addRow(btn_tsk_chk)
         layout_tsk.addRow(btn_tsk_rst)
@@ -106,6 +111,12 @@ class Window_1_3(QWidget):
             v_exmpl_s = int(self.inp_ex_s.text())
             v_exmpl_y = int(self.inp_ex_y.text())
             self.outp_ex.setText(elg.check_ds_ElGamal_outp(v_exmpl_m, v_exmpl_r, v_exmpl_s,v_exmpl_y, v_exmpl_g, v_exmpl_p))
+            self.inp_ex_m.clear()
+            self.inp_ex_p.clear()
+            self.inp_ex_g.clear()
+            self.inp_ex_r.clear()
+            self.inp_ex_s.clear()
+            self.inp_ex_y.clear()
             self.update()
         except ValueError:
             self.outp_ex.setText(f"Введи значения: \nm - строка \np, g, y, r, s - целые числa")
@@ -136,7 +147,7 @@ class Window_1_3(QWidget):
     def click_btn_tsk_rst(self):
         try:
             self.v_tsk_m, self.v_tsk_p, self.v_tsk_g, self.v_tsk_y, self.v_tsk_r, self.v_tsk_s = get_task_val()
-            self.task_text.setText(
+            self.w_tsk_text.setText(
                 f'Являеется ли подпись правильной для: \np = {self.v_tsk_p}, g = {self.v_tsk_g}, y = {self.v_tsk_y}, \nm = {self.v_tsk_m}, \nr = {self.v_tsk_r}, s = {self.v_tsk_s}')
             self.outp_tsk.setText(f"")
             self.update()

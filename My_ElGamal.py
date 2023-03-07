@@ -6,20 +6,6 @@ from math import gcd
 from util import binary_pow, get_prime_number_in_range, get_coprime_in_range
 
 
-def get_primitive_root(p: int) -> int:
-    #  Находит первообразноый корень по модулю p
-    #
-    if p == 2:
-        return 1
-    p1 = 2
-    p2 = (p - 1) // p1
-    while True:
-        g = randint(2, p - 1)
-        if not (binary_pow(g, (p - 1) // p1, p) == 1):
-            if not binary_pow(g, (p - 1) // p2, p) == 1:
-                return g
-
-
 def my_hash(string: str, p: int) -> int:
     # Находит дайджест строки string
     #
@@ -27,6 +13,22 @@ def my_hash(string: str, p: int) -> int:
     for pos in range(len(string)):
         sum = sum + ord(string[pos])
     return sum % p
+
+
+def get_primitive_root(p: int) -> int:
+    #  Находит первообразноый корень по модулю p
+    #
+    # if p == 2:
+    #     return 1
+    # p1 = 2
+    # p2 = (p - 1) // p1
+    # while True:
+    #     g = randint(2, p - 1)
+    #     if not (binary_pow(g, (p - 1) // p1, p) == 1):
+    #         if not binary_pow(g, (p - 1) // p2, p) == 1:
+    #             return g
+    res = get_primitive_roots(p)
+    return res[randint(1, len(res))]
 
 
 def get_primitive_roots(modulo: int) -> List[int]:
