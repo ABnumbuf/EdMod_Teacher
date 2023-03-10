@@ -24,16 +24,12 @@ class Window_3_3(QWidget):
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.setWindowTitle('Рюкзачная криптосистема: Алгоритм шифрования')
+        self.setWindowTitle('Рюкзачная криптосистема: Алгоритм дешифрования')
         self.setFixedSize(700, 800)
-        qr = self.frameGeometry()
-        cp = QDesktopWidget().availableGeometry().center()
-        qr.moveCenter(cp)
-        self.move(qr.topLeft())
         main_layout = QGridLayout(self)
         self.setLayout(main_layout)
         tab = QTabWidget(self)
-        tab.setFont(QFont('Arial', 14))
+        tab.setFont(QFont('Arial', 12))
         # Page Theory
         page_text = QWidget(self)
         layout = QFormLayout()

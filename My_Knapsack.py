@@ -17,8 +17,7 @@ def get_superincr_list():
     l.append(random.randint(1,8))
     for i in range(3):
         sum = 0
-        for j in l:
-            sum += j 
+        for j in l: sum += j 
         t = random.randint(sum+1,10+sum)
         l.append(t) 
     return l
@@ -35,11 +34,9 @@ def knapSack_loop(W, S, result):
     if (W[n-1] <= S):
         result[n-1]=1
         S = S - W[n-1] 
-    else:
-        result[n-1]=0
+    else: result[n-1]=0
     w = []
-    for i in range(n-1):
-        w.append(W[i]) 
+    for i in range(n-1): w.append(W[i]) 
     return knapSack_loop(w, S, result)
 
 
@@ -56,22 +53,25 @@ def knapSack_loop_out(W, S, result, text):
         res = "".join(text)
         return res
     if (W[n-1] <= S):
-        result[n-1]=1
+        result[n-1] = 1
         S = S - W[n-1] 
         text.append(f'w_{n-1} = {W[n-1]} <= S = {S}\n')
     else:
-        result[n-1]=0
+        result[n-1] = 0
         text.append(f'w_{n-1} = {W[n-1]} > S = {S}\n')
     text.append(f'x_{n-1} = {result[n-1]}\n')
     w = []
-    for i in range(n-1):
-        w.append(W[i]) 
+    for i in range(n-1): w.append(W[i]) 
     return knapSack_loop_out(w, S, result, text)
 
 
 def knapSack_out(W, S):
     text = []
+    text.append(f'Задача о рюкзаке:\n')
     n = len(W)
+    for i in range(n - 1):
+        text.append(f' {W[i]}*x_{i} +')
+    text.append(f'{W[n-1]}*x_{n-1} = {S}\n')
     result = [0 for i in range(n)]
     return knapSack_loop_out(W, S, result, text)
 

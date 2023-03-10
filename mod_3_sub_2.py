@@ -26,14 +26,10 @@ class Window_3_2(QWidget):
         super().__init__(*args, **kwargs)
         self.setWindowTitle('Рюкзачная криптосистема: Алгоритм шифрования')
         self.setFixedSize(700, 800)
-        qr = self.frameGeometry()
-        cp = QDesktopWidget().availableGeometry().center()
-        qr.moveCenter(cp)
-        self.move(qr.topLeft())
         main_layout = QGridLayout(self)
         self.setLayout(main_layout)
         tab = QTabWidget(self)
-        tab.setFont(QFont('Arial', 14))
+        tab.setFont(QFont('Arial', 12))
         # Page Theory
         page_text = QWidget(self)
         layout = QFormLayout()
@@ -101,7 +97,7 @@ class Window_3_2(QWidget):
 
     def click_btn_ex(self):
         try:
-            v_exmpl_w = str(self.inp_ex_w.text())
+            v_exmpl_w = [int(i) for i in str(self.inp_ex_w.text()).split(',')]
             v_exmpl_v = int(self.inp_ex_v.text())
             v_exmpl_m = int(self.inp_ex_m.text())
             v_exmpl_text = str(self.inp_ex_text.text())
@@ -112,7 +108,7 @@ class Window_3_2(QWidget):
             self.inp_ex_text.clear()
             self.update()
         except ValueError:
-            self.outp_ex.setText(f"Введи значения: \nm, w - целые числa \nv - последовательность целых чисел (быстроратсущий набор) \ntext - строка")
+            self.outp_ex.setText(f"Введи значения: \nm, w - целые числa \nv - последовательность целых чисел (быстрорастущий набор) \ntext - строка")
             self.update()
     
     def click_btn_tsk_chk(self):
