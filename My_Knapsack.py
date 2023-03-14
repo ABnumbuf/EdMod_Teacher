@@ -133,8 +133,6 @@ def ks_encrypt_outp(v,m,w,text):
 
 
 def ks_decrypt(v,m,w,crypt):
-    crypt = crypt.split(',')
-    crypt = [int(i) for i in crypt]
     w_inv = util.modular_inv(w,m)
     numb = [(i*w) % m for i in v]
     temp = [i*w_inv % m for i in numb]
@@ -157,8 +155,6 @@ def ks_decrypt(v,m,w,crypt):
 
 def ks_decrypt_outp(v,m,w,crypt):
     outp_text = []
-    crypt = crypt.split(',')
-    crypt = [int(i) for i in crypt]
     w_inv = util.modular_inv(w,m)
     outp_text.append(f'Обратное w по модулю m: w_inv = {w_inv}\n')
     numb = [(i*w) % m for i in v]
@@ -195,4 +191,4 @@ def ks_decrypt_outp(v,m,w,crypt):
 
 # print(ks_decrypt(v_tsk_v, v_tsk_m, v_tsk_w, str1))
 # print(ks_encrypt([6, 8, 15, 31], 65, 12,'on sale.'))
-# print(ks_decrypt([6, 8, 15, 31], 65, 12,str1))
+# print(ks_decrypt([6, 8, 15, 31], 65, 12, [128, 97, 81, 31, 0, 78, 54, 97]))

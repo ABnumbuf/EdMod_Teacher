@@ -9,15 +9,16 @@ import random
 
 
 def get_task_val():
-    v_tsk_v = [x ** random.randint(1,3) for x in range(2,random.randint(5,6))]
-    v_tsk_v.sort()
-    v_tsk_m = random.randint(2, 90)
-    v_tsk_w = random.randint(2, 40)
-    while extended_gcd(v_tsk_m,v_tsk_w)[0] == 1:
-        v_tsk_m = random.randint(2, 90)
-        v_tsk_w = random.randint(2, 40)
-    v_tsk_text = get_random_message(6)
-    return v_tsk_v, v_tsk_m, v_tsk_w, v_tsk_text.upper()
+    v = [x ** random.randint(1,3) for x in range(2,random.randint(5,6))]
+    v.sort()
+    m = random.randint(2, 90)
+    w = random.randint(2, 40)
+    while extended_gcd(m, w)[0] != 1:
+        m = random.randint(2, 90)
+        w = random.randint(2, 40)
+    text = get_random_message(6)
+    crypt = ks.ks_encrypt(v, m, w, text.upper())
+    return v, m, w, crypt
 
 
 class Window_3_3(QWidget):
@@ -46,23 +47,23 @@ class Window_3_3(QWidget):
         layout_ex = QFormLayout()
         page_example.setLayout(layout_ex)
         layout_ex.addRow(QLabel(
-            f'Шифрование сообщения по алгоритму рюкзачной криптосистемы'))
+            f'Расшифрование сообщения по алгоритму рюкзачной криптосистемы'))
         layout_ex.addRow(QLabel('Введи значения:'))
         self.inp_ex_w = QLineEdit()
         self.inp_ex_v = QLineEdit()
         self.inp_ex_m = QLineEdit()
-        self.inp_ex_text = QLineEdit()
+        self.inp_ex_crypt = QLineEdit()
         btn_ex = QPushButton("Решить")
         btn_ex.clicked.connect(self.click_btn_ex)
         self.outp_ex = QTextBrowser()
         self.inp_ex_w.setFixedSize(620, 20)
         self.inp_ex_v.setFixedSize(620, 20)
         self.inp_ex_m.setFixedSize(620, 20)
-        self.inp_ex_text.setFixedSize(620, 20)
-        layout_ex.addRow(QLabel('w = '), self.inp_ex_w)
-        layout_ex.addRow(QLabel('v = '), self.inp_ex_v)
-        layout_ex.addRow(QLabel('m = '), self.inp_ex_m)
-        layout_ex.addRow(QLabel('text = '), self.inp_ex_text)
+        self.inp_ex_crypt.setFixedSize(610, 20)
+        layout_ex.addRow(QLabel('v ='), self.inp_ex_v)
+        layout_ex.addRow(QLabel('w ='), self.inp_ex_w)
+        layout_ex.addRow(QLabel('m ='), self.inp_ex_m)
+        layout_ex.addRow(QLabel('crypt:'), self.inp_ex_crypt)
         layout_ex.addRow(btn_ex)
         layout_ex.addRow(QLabel('Результат:'))
         layout_ex.addRow(self.outp_ex)
@@ -70,10 +71,10 @@ class Window_3_3(QWidget):
         page_task = QWidget(self)
         layout_tsk = QFormLayout()
         page_task.setLayout(layout_tsk)
-        layout_tsk.addRow(QLabel('Проверка шифрования сообщения по алгоритму рюкзачной криптосистемы'))
-        self.v_tsk_v, self.v_tsk_m, self.v_tsk_w, self.v_tsk_text = get_task_val()
+        layout_tsk.addRow(QLabel('Проверка дешифрования сообщения по алгоритму рюкзачной криптосистемы'))
+        self.v_tsk_v, self.v_tsk_m, self.v_tsk_w, self.v_tsk_crypt = get_task_val()
         self.task_text = QLabel(
-            f'Зашифруй сообщение: \ntext = {self.v_tsk_text} \nw = {self.v_tsk_w} \nv = {self.v_tsk_v}) \nm = {self.v_tsk_m})')
+            f'Расшифруй сообщение: {self.v_tsk_crypt}\nv = {self.v_tsk_v}\nw = {self.v_tsk_w}\nm = {self.v_tsk_m}')
         self.task_text.setAlignment(QtCore.Qt.AlignCenter)
         self.task_text.setFixedSize(620,160)
         self.inp_tsk = QLineEdit()
@@ -97,28 +98,31 @@ class Window_3_3(QWidget):
 
     def click_btn_ex(self):
         try:
-            v_exmpl_a = int(self.inp_ex_a.text())
-            v_exmpl_b = int(self.inp_ex_b.text())
-            v_exmpl_n = int(self.inp_ex_n.text())
-            self.outp_ex.setText('')
-            self.inp_ex_a.clear()
-            self.inp_ex_b.clear()
-            self.inp_ex_n.clear()
+            v_exmpl_v = [int(i) for i in str(self.inp_ex_v.text()).split(',')]
+            v_exmpl_w = int(self.inp_ex_w.text())
+            v_exmpl_m = int(self.inp_ex_m.text())
+            v_exmpl_crypt = [int(i) for i in str(self.inp_ex_crypt.text()).split(',')]
+            self.outp_ex.setText(
+                f'v = {v_exmpl_v}\nw = {v_exmpl_w}\nm = {v_exmpl_m}\nШифр: {v_exmpl_crypt}\n{ks.ks_decrypt_outp(v_exmpl_v,v_exmpl_m,v_exmpl_w,v_exmpl_crypt)}')
+            self.inp_ex_v.clear()
+            self.inp_ex_w.clear()
+            self.inp_ex_m.clear()
+            self.inp_ex_crypt.clear()
             self.update()
         except ValueError:
-            self.outp_ex.setText(f"Введи значения: \na, b, n - целые числa")
+            self.outp_ex.setText(f"Введи значения: \nm, w - целые числa \nv, crypt - последовательность целых чисел")
             self.update()
     
     def click_btn_tsk_chk(self):
         try:
             inp_tsk = str(self.inp_tsk.text())
-            v_tsk = ks.ks_encrypt(self.v_tsk_v, self.v_tsk_m, self.v_tsk_w, self.v_tsk_text)
+            v_tsk = ks.ks_decrypt(self.v_tsk_v, self.v_tsk_m, self.v_tsk_w, self.v_tsk_crypt)
             if (inp_tsk == v_tsk):
                 self.outp_tsk.setText(
-                    f"")
+                    f"{inp_tsk} = {v_tsk}\nВерно")
             else:
                 self.outp_tsk.setText(
-                    f"Неверно")
+                    f"{inp_tsk} != {v_tsk}\nНеверно")
             self.inp_tsk.clear()
             self.update()
         except ValueError:
@@ -127,9 +131,9 @@ class Window_3_3(QWidget):
 
     def click_btn_tsk_rst(self):
         try:
-            self.v_tsk_v, self.v_tsk_m, self.v_tsk_w, self.v_tsk_text = get_task_val()
+            self.v_tsk_v, self.v_tsk_m, self.v_tsk_w, self.v_tsk_crypt = get_task_val()
             self.task_text.setText(
-                f'Зашифруй сообщение: \ntext = {self.v_tsk_text} \nw = {self.v_tsk_w} \nv = {self.v_tsk_v}) \nm = {self.v_tsk_m})')
+                f'Расшифруй сообщение: {self.v_tsk_crypt}\nv = {self.v_tsk_v}\nw = {self.v_tsk_w}\nm = {self.v_tsk_m}')
             self.inp_tsk.clear()
             self.update()
         except ValueError:

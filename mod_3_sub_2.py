@@ -13,7 +13,7 @@ def get_task_val():
     v_tsk_v.sort()
     v_tsk_m = random.randint(2, 90)
     v_tsk_w = random.randint(2, 40)
-    while extended_gcd(v_tsk_m,v_tsk_w)[0] == 1:
+    while extended_gcd(v_tsk_m,v_tsk_w)[0] != 1:
         v_tsk_m = random.randint(2, 90)
         v_tsk_w = random.randint(2, 40)
     v_tsk_text = get_random_message(6)
@@ -59,10 +59,10 @@ class Window_3_2(QWidget):
         self.inp_ex_v.setFixedSize(620, 20)
         self.inp_ex_m.setFixedSize(620, 20)
         self.inp_ex_text.setFixedSize(620, 20)
-        layout_ex.addRow(QLabel('w = '), self.inp_ex_w)
-        layout_ex.addRow(QLabel('v = '), self.inp_ex_v)
-        layout_ex.addRow(QLabel('m = '), self.inp_ex_m)
-        layout_ex.addRow(QLabel('text = '), self.inp_ex_text)
+        layout_ex.addRow(QLabel('v ='), self.inp_ex_v)
+        layout_ex.addRow(QLabel('w ='), self.inp_ex_w)
+        layout_ex.addRow(QLabel('m ='), self.inp_ex_m)
+        layout_ex.addRow(QLabel('text:'), self.inp_ex_text)
         layout_ex.addRow(btn_ex)
         layout_ex.addRow(QLabel('Результат:'))
         layout_ex.addRow(self.outp_ex)
@@ -73,7 +73,7 @@ class Window_3_2(QWidget):
         layout_tsk.addRow(QLabel('Проверка шифрования по алгоритму рюкзачной криптосистемы'))
         self.v_tsk_v, self.v_tsk_m, self.v_tsk_w, self.v_tsk_text = get_task_val()
         self.task_text = QLabel(
-            f'Зашифруй сообщение: \ntext = {self.v_tsk_text} \nw = {self.v_tsk_w} \nv = {self.v_tsk_v} \nm = {self.v_tsk_m}')
+            f'Зашифруй сообщение: {self.v_tsk_text}\nv = {self.v_tsk_v}\nw = {self.v_tsk_w}\nm = {self.v_tsk_m}')
         self.task_text.setAlignment(QtCore.Qt.AlignCenter)
         self.task_text.setFixedSize(620, 160)
         self.inp_tsk = QLineEdit()
@@ -132,7 +132,7 @@ class Window_3_2(QWidget):
         try:
             self.v_tsk_v, self.v_tsk_m, self.v_tsk_w, self.v_tsk_text = get_task_val()
             self.task_text.setText(
-                f'Зашифруй сообщение: \ntext = {self.v_tsk_text} \nw = {self.v_tsk_w} \nv = {self.v_tsk_v} \nm = {self.v_tsk_m}')
+                f'Зашифруй сообщение: {self.v_tsk_text}\nv = {self.v_tsk_v}\nw = {self.v_tsk_w}\nm = {self.v_tsk_m}')
             self.inp_tsk.clear()
             self.update()
         except ValueError:
