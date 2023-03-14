@@ -97,11 +97,12 @@ class Window_3_2(QWidget):
 
     def click_btn_ex(self):
         try:
-            v_exmpl_w = [int(i) for i in str(self.inp_ex_w.text()).split(',')]
-            v_exmpl_v = int(self.inp_ex_v.text())
+            v_exmpl_v = [int(i) for i in str(self.inp_ex_v.text()).split(',')]
+            v_exmpl_w = int(self.inp_ex_w.text())
             v_exmpl_m = int(self.inp_ex_m.text())
             v_exmpl_text = str(self.inp_ex_text.text())
-            self.outp_ex.setText('')
+            self.outp_ex.setText(
+                f"v = {v_exmpl_v}\nw = {v_exmpl_w}\nm = {v_exmpl_m}\nОткрытый текст: {v_exmpl_text}\n{ks.ks_encrypt_outp(v_exmpl_v,v_exmpl_m,v_exmpl_w,v_exmpl_text)}")
             self.inp_ex_w.clear()
             self.inp_ex_v.clear()
             self.inp_ex_m.clear()
@@ -113,14 +114,14 @@ class Window_3_2(QWidget):
     
     def click_btn_tsk_chk(self):
         try:
-            inp_tsk = str(self.inp_tsk.text())
+            inp_tsk = [int(i) for i in str(self.inp_tsk.text()).split(',')]
             v_tsk = ks.ks_encrypt(self.v_tsk_v, self.v_tsk_m, self.v_tsk_w, self.v_tsk_text)
             if (inp_tsk == v_tsk):
                 self.outp_tsk.setText(
-                    f"\nВерно")
+                    f"{inp_tsk} = {v_tsk}\nВерно")
             else:
                 self.outp_tsk.setText(
-                    f"\nНеверно")
+                    f"{inp_tsk} != {v_tsk}\nНеверно")
             self.inp_tsk.clear()
             self.update()
         except ValueError:

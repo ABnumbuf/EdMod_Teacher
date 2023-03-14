@@ -99,7 +99,7 @@ class Window_2_2(QWidget):
             v_x = dis.sylvester_pohlig_hellman_method(self.v_tsk_a, self.v_tsk_b, self.v_tsk_n)
             if (inp_tsk == v_x):
                 self.outp_tsk.setText(
-                    f"<p><box>{self.v_tsk_a}<sup>{v_x}</sup></box> &#8801; {self.v_tsk_b} (mod {self.v_tsk_n})</p><p>Верно</n><p></p><p>{dis.sylvester_pohlig_hellman_method_output(self.v_tsk_a, self.v_tsk_b, self.v_tsk_n)}</p>")
+                    f"<p><box>{self.v_tsk_a}<sup>{v_x}</sup></box> &#8801; {self.v_tsk_b} (mod {self.v_tsk_n})</p><p>Верно</n><p></p>")
             else:
                 self.outp_tsk.setText(
                     f"<p><box>{self.v_tsk_a}<sup>{inp_tsk}</sup></box> &#8801; {self.v_tsk_b} (mod {self.v_tsk_n})</p><p>Неверно</n>")

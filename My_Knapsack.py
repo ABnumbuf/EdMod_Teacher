@@ -105,17 +105,25 @@ def ks_encrypt_outp(v,m,w,text):
     outp_text.append(f"text = '{text}'\n")
     text = [i for i in ''.join([bitalph[i] for i in text])]
     outp_text.append(f'Заменим текст на двоичный код\n')
+    outp_text.append(f"text = {''.join(text)}\n")
+    outp_text.append(f'Дописываем 1, если необходимо. Разбиваем на блоки.\n')
     for i in range(len(text)%len(v)): text.append('1')
     temp_text = [''.join([text[i+j] for j in range(len(v))]) for i in range(0,len(text),len(v))]
     outp_text.append(f'text = {temp_text}\n')
+    outp_text.append(f'Нахоим последовательность шифрования по формуле v_1 * w (mod m)\n')
     numb = [(i*w) % m for i in v]
-    outp_text.append(f'последовательность шифрвания: {numb}\n')
+    for i in range(len(v)):
+        outp_text.append(f'({v[i]} * {w}) (mod {m}) = {numb[i]}\n')
+    outp_text.append(f'Последовательность шифрования: {numb}\n')
     crypt = []
     for i in temp_text:
         sum = 0
         for k in range(len(v)):
             sum += int(i[k])*numb[k]
+            outp_text.append(f'{i[k]} * {numb[k]}')
+            outp_text.append(f' + ')
         crypt.append(sum)
+        outp_text[len(outp_text) - 1] = f" = {sum}\n"
     outp_text.append(f'Шифр: {crypt}\n')
     res = "".join(outp_text)
     return res
