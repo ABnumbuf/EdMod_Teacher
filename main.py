@@ -93,15 +93,15 @@ if __name__ == '__main__':
     app.setStyle('Fusion')
 
     dark_palette = QtGui.QPalette()
-    dark_palette.setColor(QtGui.QPalette.Background, QtGui.QColor(51, 50, 50))
-    dark_palette.setColor(QtGui.QPalette.Base, QtGui.QColor(91, 90, 90))
-    dark_palette.setColor(QtGui.QPalette.WindowText, QtGui.QColor(255, 255, 235))
-    dark_palette.setColor(QtGui.QPalette.BrightText, QtGui.QColor(255, 255, 235))
-    dark_palette.setColor(QtGui.QPalette.Text, QtGui.QColor(255, 255, 235))
+    dark_palette.setColor(QtGui.QPalette.Background, QtGui.QColor(255, 241, 214))
+    dark_palette.setColor(QtGui.QPalette.WindowText, QtGui.QColor(86, 69, 57))
+    dark_palette.setColor(QtGui.QPalette.BrightText, QtGui.QColor(208, 140, 96))
+    dark_palette.setColor(QtGui.QPalette.Base, QtGui.QColor(255, 235, 194))
+    dark_palette.setColor(QtGui.QPalette.Text, QtGui.QColor(86, 69, 57))
     dark_palette.setColor(QtGui.QPalette.Button, QtGui.QColor(255, 203, 105))
-    dark_palette.setColor(QtGui.QPalette.ButtonText, QtGui.QColor(31, 30, 30))
-    dark_palette.setColor(QtGui.QPalette.Highlight, QtGui.QColor(71, 70, 70))
-    dark_palette.setColor(QtGui.QPalette.HighlightedText, QtGui.QColor(255, 203, 105))
+    dark_palette.setColor(QtGui.QPalette.ButtonText, QtGui.QColor(86, 69, 57))
+    dark_palette.setColor(QtGui.QPalette.Highlight, QtGui.QColor(255, 203, 105))
+    dark_palette.setColor(QtGui.QPalette.HighlightedText, QtGui.QColor(86, 69, 57))
 
     # app.setPalette(dark_palette)
 
