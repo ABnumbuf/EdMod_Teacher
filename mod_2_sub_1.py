@@ -56,6 +56,10 @@ class Window_2_1(QWidget):
         page_task.setLayout(layout_tsk)
         layout_tsk.addRow(QLabel('Проверка решения ЗДЛ методом согласования'))
         self.v_tsk_a, self.v_tsk_b, self.v_tsk_n = get_values(1)[0]
+        self.v_x = dis.coherence_method(self.v_tsk_a, self.v_tsk_b, self.v_tsk_n)
+        while self.v_x == 'None':
+            self.v_tsk_a, self.v_tsk_b, self.v_tsk_n = get_values(1)[0]
+            self.v_x = dis.coherence_method(self.v_tsk_a, self.v_tsk_b, self.v_tsk_n)
         self.task_text = QLabel(
             f'<p>Реши задачу: <box>{self.v_tsk_a}<sup>x</sup></box> &#8801; {self.v_tsk_b} (mod {self.v_tsk_n})</p>')
         self.task_text.setAlignment(QtCore.Qt.AlignCenter)
@@ -96,10 +100,9 @@ class Window_2_1(QWidget):
     def click_btn_tsk_chk(self):
         try:
             inp_tsk = int(self.inp_tsk.text())
-            v_x = dis.coherence_method(self.v_tsk_a, self.v_tsk_b, self.v_tsk_n)
-            if (inp_tsk == v_x):
+            if (inp_tsk == self.v_x):
                 self.outp_tsk.setText(
-                    f"<p><box>{self.v_tsk_a}<sup>{v_x}</sup></box> &#8801; {self.v_tsk_b} (mod {self.v_tsk_n})</p><p>Верно</n><p></p><p>{dis.coherence_method_output(self.v_tsk_a, self.v_tsk_b, self.v_tsk_n)}</p>")
+                    f"<p><box>{self.v_tsk_a}<sup>{self.v_x}</sup></box> &#8801; {self.v_tsk_b} (mod {self.v_tsk_n})</p><p>Верно</n><p></p><p>{dis.coherence_method_output(self.v_tsk_a, self.v_tsk_b, self.v_tsk_n)}</p>")
             else:
                 self.outp_tsk.setText(
                     f"<p><box>{self.v_tsk_a}<sup>{inp_tsk}</sup></box> &#8801; {self.v_tsk_b} (mod {self.v_tsk_n})</p><p>Неверно</n>")

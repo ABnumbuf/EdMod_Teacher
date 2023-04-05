@@ -82,7 +82,7 @@ def knapSack_out(W, S):
 #     print(i)
 
 
-def ks_encrypt(v,m,w,text):
+def ks_encrypt(v, m, w, text):
     text = text.translate(str.maketrans({key: None for key in string.punctuation}))
     text = ''.join(text.split()).upper()
     text = [i for i in ''.join([bitalph[i] for i in text])]
@@ -98,7 +98,7 @@ def ks_encrypt(v,m,w,text):
     return crypt
 
 
-def ks_encrypt_outp(v,m,w,text):
+def ks_encrypt_outp(v, m, w, text):
     outp_text = []
     text = text.translate(str.maketrans({key: None for key in string.punctuation}))
     text = ''.join(text.split()).upper()
@@ -129,33 +129,31 @@ def ks_encrypt_outp(v,m,w,text):
     return res
 
 
-#print(ks_encrypt_outp([6, 8, 15, 31], 65, 12,'on sale.'))
-
-
-def ks_decrypt(v,m,w,crypt):
-    w_inv = util.modular_inv(w,m)
+def ks_decrypt(v, m, w, crypt):
+    w_inv = util.modular_inv(w, m)
     numb = [(i*w) % m for i in v]
     temp = [i*w_inv % m for i in numb]
     text_temp = ''
     for i in crypt:
-        for j in knapSack(temp, w_inv*i % m):
-            text_temp += str(j)
-    text=[]
-    for i in range(0, len(text_temp)-5, 5):
+        for j in knapSack(temp, w_inv*i % m): text_temp += str(j)
+    text = []
+    for i in range(0, len(text_temp) - 5, 5):
         temp = ''
-        for k in range(5):
-            temp += text_temp[i+k]
+        for k in range(5): temp += text_temp[i+k]
         text.append(temp) 
-    res=[]
-    for i in text:
-        res.append(next(ch for ch, code in bitalph.items() if code == i))
+    res = []
+    for z in text:
+        keys = [ch for ch, code in bitalph.items() if code == z]
+        if keys:
+            res.append(keys[0])
     res = ''.join(res)
     return res
 
+# print(ks_decrypt([6, 8, 15, 31], 65, 12,ks_encrypt([6, 8, 15, 31], 65, 12,'on sale.')))
 
-def ks_decrypt_outp(v,m,w,crypt):
+def ks_decrypt_outp(v, m, w, crypt):
     outp_text = []
-    w_inv = util.modular_inv(w,m)
+    w_inv = util.modular_inv(w, m)
     outp_text.append(f'Обратное w по модулю m: w_inv = {w_inv}\n')
     numb = [(i*w) % m for i in v]
     outp_text.append(f'Последовательность шифрования: {numb}\n')
@@ -173,15 +171,16 @@ def ks_decrypt_outp(v,m,w,crypt):
     text=[]
     for i in range(0, len(text_temp)-5, 5):
         temp = ''
-        for k in range(5):
-            temp += text_temp[i+k]
+        for k in range(5): temp += text_temp[i+k]
         text.append(temp) 
     outp_text.append(f'Восстановим открытый текст, перегруппировав биты в блоки длиной пять бит:\n')
     outp_text.append(f'{text}\n')
     outp_text.append(f'Заменим каждый блок на соотвествующую букву:\n')
     res=[]
-    for i in text:
-        res.append(next(ch for ch, code in bitalph.items() if code == i))
+    for z in text:
+        keys = [ch for ch, code in bitalph.items() if code == z]
+        if keys:
+            res.append(keys[0])
     outp_text.append(f'{res}\n')
     res = ''.join(res)
     outp_text.append(f"text = '{res}'\n")
@@ -189,6 +188,32 @@ def ks_decrypt_outp(v,m,w,crypt):
     return outp_text
 
 
-# print(ks_decrypt(v_tsk_v, v_tsk_m, v_tsk_w, str1))
-# print(ks_encrypt([6, 8, 15, 31], 65, 12,'on sale.'))
-# print(ks_decrypt([6, 8, 15, 31], 65, 12, [128, 97, 81, 31, 0, 78, 54, 97]))
+def get_val_tsk_3_1():
+    w = [x ** random.randint(1, 3) for x in range(2, random.randint(5, 6))]
+    w.sort()
+    s = random.randint(w[2], 100)
+    return w, s
+
+def get_val_tsk_3_2():
+    w = [x ** random.randint(1,3) for x in range(2, random.randint(5, 6))]
+    w.sort()
+    m = random.randint(2, 90)
+    v = random.randint(2, 40)
+    while util.extended_gcd(m, v)[0] != 1:
+        m = random.randint(2, 90)
+        v = random.randint(2, 40)
+    text = util.get_random_message(6)
+    return w, m, v, text.upper()
+
+
+def get_val_tsk_3_3():
+    w = [x ** random.randint(1,3) for x in range(2, random.randint(5, 6))]
+    w.sort()
+    m = random.randint(2, 90)
+    v = random.randint(2, 40)
+    while util.extended_gcd(m, v)[0] != 1:
+        m = random.randint(2, 90)
+        v = random.randint(2, 40)
+    text = util.get_random_message(6)
+    crypt = ks_encrypt(w, m, v, text.upper())
+    return w, m, v, crypt

@@ -5,13 +5,6 @@ from PyQt5.QtGui import *
 from PyQt5 import QtCore
 import My_Knapsack as ks
 from util import read_text
-import random as rd
-
-def get_task_val():
-    v_tsk_w = [x ** rd.randint(1,3) for x in range(2,rd.randint(5,6))]
-    v_tsk_w.sort()
-    v_tsk_s = rd.randint(v_tsk_w[2],100)
-    return v_tsk_w, v_tsk_s
 
 
 class Window_3_1(QWidget):
@@ -59,7 +52,7 @@ class Window_3_1(QWidget):
         layout_tsk = QFormLayout()
         page_task.setLayout(layout_tsk)
         layout_tsk.addRow(QLabel('Проверка решения задачи о рюкзаке по заданным значениям'))
-        self.v_tsk_w, self.v_tsk_s = get_task_val()
+        self.v_tsk_w, self.v_tsk_s = ks.get_val_tsk_3_1()
         self.task_text = QLabel(
             f'w = {self.v_tsk_w}\n s = {self.v_tsk_s}')
         self.task_text.setAlignment(QtCore.Qt.AlignCenter)
@@ -116,7 +109,7 @@ class Window_3_1(QWidget):
 
     def click_btn_tsk_rst(self):
         try:
-            self.v_tsk_w, self.v_tsk_s = get_task_val()
+            self.v_tsk_w, self.v_tsk_s = ks.get_val_tsk_3_1()
             self.task_text.setText(
                 f'w = {self.v_tsk_w}\n s = {self.v_tsk_s}')
             self.inp_tsk.clear()

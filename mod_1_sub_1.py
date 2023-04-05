@@ -5,22 +5,7 @@ from PyQt5.QtGui import *
 from PyQt5 import QtCore
 from util import read_text, get_prime_numbers_in_range, binary_pow
 import My_ElGamal as elg
-import random
 import sympy
-
-def get_val_tsk_1():
-    p_a = random.randint(1000, 1100)
-    p_b = p_a + random.randint(300, 500)
-    return p_a, p_b
-
-def get_val_tsk_2():
-    return elg.get_prime_number_in_range(20, 300)
-
-def get_val_tsk_3():
-    p = elg.get_prime_number_in_range(1000, 1100)
-    g = elg.get_primitive_root(p)
-    x = elg.get_prime_number_in_range(1, p - 1)
-    return p, g, x
 
 
 class Window_1_1(QWidget):
@@ -125,7 +110,7 @@ class Window_1_1(QWidget):
         layout_tsk_1 = QGridLayout()
         page_tsk_1.setLayout(layout_tsk_1)
 
-        self.v_tsk_1_p_a, self.v_tsk_1_p_b = get_val_tsk_1()
+        self.v_tsk_1_p_a, self.v_tsk_1_p_b = elg.get_val_tsk_1_1_1()
         self.w_tsk_1_text = QLabel(
             f'\nНайди простое число на промежутке [{self.v_tsk_1_p_a}, {self.v_tsk_1_p_b}]\n')
         self.w_tsk_1_text.setAlignment(QtCore.Qt.AlignCenter)
@@ -149,7 +134,7 @@ class Window_1_1(QWidget):
         layout_tsk_2 = QGridLayout()
         page_tsk_2.setLayout(layout_tsk_2)
 
-        self.v_tsk_2 = get_val_tsk_2()
+        self.v_tsk_2 = elg.get_val_tsk_1_1_2()
         self.w_tsk_2_text = QLabel(
             f'\nНайди первообразный корень числа {self.v_tsk_2}\n')
         self.w_tsk_2_text.setAlignment(QtCore.Qt.AlignCenter)
@@ -173,7 +158,7 @@ class Window_1_1(QWidget):
         layout_tsk_3 = QGridLayout()
         page_tsk_3.setLayout(layout_tsk_3)
 
-        self.v_tsk_3_p, self.v_tsk_3_g, self.v_tsk_3_x = get_val_tsk_3()
+        self.v_tsk_3_p, self.v_tsk_3_g, self.v_tsk_3_x = elg.get_val_tsk_1_1_3()
         self.w_tsk_3_text = QLabel(
             f'<p>Найди y &#8801; {self.v_tsk_3_g}<sup>{self.v_tsk_3_x}</sup> (mod {self.v_tsk_3_p})</p><p></p>')
         self.w_tsk_3_text.setAlignment(QtCore.Qt.AlignCenter)
@@ -268,7 +253,7 @@ class Window_1_1(QWidget):
 
     def click_btn_tsk_1_rst(self):
         try:
-            self.v_tsk_1_p_a, self.v_tsk_1_p_b = get_val_tsk_1()
+            self.v_tsk_1_p_a, self.v_tsk_1_p_b = elg.get_val_tsk_1_1_1()
             self.w_tsk_1_text.setText(
                 f'\nНайди простое число на промежутке [{self.v_tsk_1_p_a}, {self.v_tsk_1_p_b}]\n')
             self.outp_tsk_1.setText(f"")
@@ -293,7 +278,7 @@ class Window_1_1(QWidget):
 
     def click_btn_tsk_2_rst(self):
         try:
-            self.v_tsk_2 = get_val_tsk_2()
+            self.v_tsk_2 = elg.get_val_tsk_1_1_2()
             self.w_tsk_2_text.setText(
                 f'\nНайди первообразный корень числа {self.v_tsk_2}\n')
             self.outp_tsk_2.setText(f"")
@@ -316,7 +301,7 @@ class Window_1_1(QWidget):
 
     def click_btn_tsk_3_rst(self):
         try:
-            self.v_tsk_3_g, self.v_tsk_3_x, self.v_tsk_3_p= get_val_tsk_3()
+            self.v_tsk_3_g, self.v_tsk_3_x, self.v_tsk_3_p = elg.get_val_tsk_1_1_3()
             self.w_tsk_3_text.setText(
                 f'<p>Найди y &#8801; {self.v_tsk_3_g}<sup>{self.v_tsk_3_x}</sup> (mod {self.v_tsk_3_p})</p><p></p>')
             self.outp_tsk_3.setText(f"")

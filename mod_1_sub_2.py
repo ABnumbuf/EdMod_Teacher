@@ -3,16 +3,8 @@
 from PyQt5.QtWidgets import * 
 from PyQt5.QtGui import *
 from PyQt5 import QtCore
-from util import read_text, get_random_message
+from util import read_text
 import My_ElGamal as elg
-
-
-def get_task_val():
-    v_tsk_p = elg.get_prime_number_in_range(10, 100)
-    v_tsk_g = elg.get_primitive_root(v_tsk_p)
-    v_tsk_x = elg.get_prime_number_in_range(1, v_tsk_p - 1)
-    v_tsk_m = get_random_message(6)
-    return v_tsk_p,v_tsk_g,v_tsk_x,v_tsk_m
 
 
 class Window_1_2(QWidget):
@@ -65,7 +57,7 @@ class Window_1_2(QWidget):
         layout_tsk = QFormLayout()
         page_task.setLayout(layout_tsk)
         layout_tsk.addRow(QLabel('Проверка ЭЦП Эль-Гамаля по заданным значениям'))
-        self.v_tsk_p,self.v_tsk_g,self.v_tsk_x,self.v_tsk_m = get_task_val()
+        self.v_tsk_p,self.v_tsk_g,self.v_tsk_x,self.v_tsk_m = elg.get_val_tsk_1_2()
         self.task_text = QLabel(
                                 f'Найди значения подписи для: \np = {self.v_tsk_p}, \ng = {self.v_tsk_g}, \nx = {self.v_tsk_x}, \nm = {self.v_tsk_m}')
         self.task_text.setAlignment(QtCore.Qt.AlignCenter)
@@ -135,7 +127,7 @@ class Window_1_2(QWidget):
 
     def click_btn_tsk_rst(self):
         try:
-            self.v_tsk_p, self.v_tsk_g, self.v_tsk_x, self.v_tsk_m = get_task_val()
+            self.v_tsk_p, self.v_tsk_g, self.v_tsk_x, self.v_tsk_m = elg.get_val_tsk_1_2()
             self.task_text.setText(
                 f'Найди значения подписи для: \np = {self.v_tsk_p}, \ng = {self.v_tsk_g}, \nx = {self.v_tsk_x}, \nm = {self.v_tsk_m}')
             self.inp_tsk_r.clear()

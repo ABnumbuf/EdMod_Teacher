@@ -4,21 +4,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5 import QtCore
 import My_Knapsack as ks
-from util import read_text, get_random_message, extended_gcd
-import random
-
-
-def get_task_val():
-    v = [x ** random.randint(1,3) for x in range(2,random.randint(5,6))]
-    v.sort()
-    m = random.randint(2, 90)
-    w = random.randint(2, 40)
-    while extended_gcd(m, w)[0] != 1:
-        m = random.randint(2, 90)
-        w = random.randint(2, 40)
-    text = get_random_message(6)
-    crypt = ks.ks_encrypt(v, m, w, text.upper())
-    return v, m, w, crypt
+from util import read_text
 
 
 class Window_3_3(QWidget):
@@ -72,7 +58,7 @@ class Window_3_3(QWidget):
         layout_tsk = QFormLayout()
         page_task.setLayout(layout_tsk)
         layout_tsk.addRow(QLabel('Проверка дешифрования сообщения по алгоритму рюкзачной криптосистемы'))
-        self.v_tsk_v, self.v_tsk_m, self.v_tsk_w, self.v_tsk_crypt = get_task_val()
+        self.v_tsk_w, self.v_tsk_m, self.v_tsk_v, self.v_tsk_crypt = ks.get_val_tsk_3_3()
         self.task_text = QLabel(
             f'Расшифруй сообщение: {self.v_tsk_crypt}\nv = {self.v_tsk_v}\nw = {self.v_tsk_w}\nm = {self.v_tsk_m}')
         self.task_text.setAlignment(QtCore.Qt.AlignCenter)
@@ -131,7 +117,7 @@ class Window_3_3(QWidget):
 
     def click_btn_tsk_rst(self):
         try:
-            self.v_tsk_v, self.v_tsk_m, self.v_tsk_w, self.v_tsk_crypt = get_task_val()
+            self.v_tsk_v, self.v_tsk_m, self.v_tsk_w, self.v_tsk_crypt = ks.get_val_tsk_3_3()
             self.task_text.setText(
                 f'Расшифруй сообщение: {self.v_tsk_crypt}\nv = {self.v_tsk_v}\nw = {self.v_tsk_w}\nm = {self.v_tsk_m}')
             self.inp_tsk.clear()

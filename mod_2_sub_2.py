@@ -56,6 +56,10 @@ class Window_2_2(QWidget):
         page_task.setLayout(layout_tsk)
         layout_tsk.addRow(QLabel('Проверка решения ЗДЛ методом СПХ'))
         self.v_tsk_a, self.v_tsk_b, self.v_tsk_n = get_values(1)[0]
+        self.v_x = dis.coherence_method(self.v_tsk_a, self.v_tsk_b, self.v_tsk_n)
+        while self.v_x == 'None':
+            self.v_tsk_a, self.v_tsk_b, self.v_tsk_n = get_values(1)[0]
+            self.v_x = dis.coherence_method(self.v_tsk_a, self.v_tsk_b, self.v_tsk_n)
         self.task_text = QLabel(
             f'<p>Реши задачу: <box>{self.v_tsk_a}<sup>x</sup></box> &#8801; {self.v_tsk_b} (mod {self.v_tsk_n})</p>')
         self.task_text.setAlignment(QtCore.Qt.AlignCenter)

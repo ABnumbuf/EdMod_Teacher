@@ -3,7 +3,7 @@
 from typing import Tuple, List
 from random import randint
 from math import gcd
-from util import binary_pow, get_prime_number_in_range, get_coprime_in_range
+from util import binary_pow, get_prime_number_in_range, get_coprime_in_range, get_random_message
 
 
 def my_hash(string: str, p: int) -> int:
@@ -28,7 +28,7 @@ def get_primitive_root(p: int) -> int:
     #         if not binary_pow(g, (p - 1) // p2, p) == 1:
     #             return g
     res = get_primitive_roots(p)
-    return res[randint(1, len(res))]
+    return res[randint(1, len(res) - 1)]
 
 
 def get_primitive_roots(modulo: int) -> List[int]:
@@ -139,3 +139,30 @@ def check_ds_ElGamal_outp(m: str, r: int, s: int,
         outp2.append('Подпись подделана.\n')
         res = "".join(outp2)
         return res
+    
+def get_val_tsk_1_1_1():
+    p_a = randint(1000, 1100)
+    p_b = p_a + randint(300, 500)
+    return p_a, p_b
+
+def get_val_tsk_1_1_2():
+    return get_prime_number_in_range(20, 300)
+
+def get_val_tsk_1_1_3():
+    p = get_prime_number_in_range(700, 900)
+    g = get_primitive_root(p)
+    x = get_prime_number_in_range(1, p - 1)
+    return p, g, x
+
+def get_val_tsk_1_2():
+    p = get_prime_number_in_range(10, 100)
+    g = get_primitive_root(p)
+    x = get_prime_number_in_range(1, p - 1)
+    m = get_random_message(6)
+    return p, g, x, m
+
+def get_val_tsk_1_3():
+    y, p, g, x = get_keys_ElGamal(10, 100)
+    m = get_random_message(6)
+    r, s = ds_ElGamal(m, p, g, x)
+    return m, p, g, y, r, s

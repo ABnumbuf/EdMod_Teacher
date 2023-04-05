@@ -6,11 +6,13 @@ from PyQt5.QtGui import *
 from PyQt5 import QtCore, QtGui
 import mod_1_sub_1, mod_1_sub_2, mod_1_sub_3 \
     , mod_2_sub_1 , mod_2_sub_2, mod_2_sub_3 \
-    , mod_3_sub_1, mod_3_sub_2, mod_3_sub_3
+    , mod_3_sub_1, mod_3_sub_2, mod_3_sub_3 \
+    , mod_4
 
 mods = ['ЭЦП по схеме Эль-Гамаля'
         ,'Задача дискретного логарифмирования'
-        ,'Рюкзачная криптосистема']
+        ,'Рюкзачная криптосистема'
+        , 'Тестирование']
 sub_1 = ['Генерация ключей'
         ,'Создание подписи'
         ,'Валидация подписи']
@@ -59,14 +61,19 @@ class MainWindow(QWidget):
             print(choosed)
             if choosed in mods:
                 self.cmb.clear()
-                if choosed == mods[0]:
-                    self.cmb.addItems(sub_1)
-                elif choosed == mods[1]:
-                    self.cmb.addItems(sub_2)
-                elif choosed == mods[2]:
-                    self.cmb.addItems(sub_3)
                 self.btn.setText('Начать')
                 self.lb3.setText(f'Выбери подраздел [{choosed}]')
+                if choosed == mods[0]: self.cmb.addItems(sub_1)
+                elif choosed == mods[1]: self.cmb.addItems(sub_2)
+                elif choosed == mods[2]: self.cmb.addItems(sub_3)
+                elif choosed == mods[3]:
+                    mod_4.win_4(self)
+                    self.cmb.clear()
+                    self.cmb.addItems(mods)
+                    self.btn.setText('Далее')
+                    self.lb3.setText(f'Выбери раздел')
+                    self.update()
+                
             else:
                 if   choosed == sub_1[0]: mod_1_sub_1.win_1_1(self)
                 elif choosed == sub_1[1]: mod_1_sub_2.win_1_2(self)

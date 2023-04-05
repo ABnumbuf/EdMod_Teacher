@@ -4,20 +4,8 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5 import QtCore
 import My_Knapsack as ks
-from util import read_text, get_random_message, extended_gcd
-import random
+from util import read_text
 
-
-def get_task_val():
-    v_tsk_v = [x ** random.randint(1,3) for x in range(2, random.randint(5,6))]
-    v_tsk_v.sort()
-    v_tsk_m = random.randint(2, 90)
-    v_tsk_w = random.randint(2, 40)
-    while extended_gcd(v_tsk_m,v_tsk_w)[0] != 1:
-        v_tsk_m = random.randint(2, 90)
-        v_tsk_w = random.randint(2, 40)
-    v_tsk_text = get_random_message(6)
-    return v_tsk_v, v_tsk_m, v_tsk_w, v_tsk_text.upper()
 
 
 class Window_3_2(QWidget):
@@ -71,7 +59,7 @@ class Window_3_2(QWidget):
         layout_tsk = QFormLayout()
         page_task.setLayout(layout_tsk)
         layout_tsk.addRow(QLabel('Проверка шифрования по алгоритму рюкзачной криптосистемы'))
-        self.v_tsk_v, self.v_tsk_m, self.v_tsk_w, self.v_tsk_text = get_task_val()
+        self.v_tsk_w, self.v_tsk_m, self.v_tsk_v, self.v_tsk_text = ks.get_val_tsk_3_2()
         self.task_text = QLabel(
             f'Зашифруй сообщение: {self.v_tsk_text}\nv = {self.v_tsk_v}\nw = {self.v_tsk_w}\nm = {self.v_tsk_m}')
         self.task_text.setAlignment(QtCore.Qt.AlignCenter)
@@ -130,7 +118,7 @@ class Window_3_2(QWidget):
 
     def click_btn_tsk_rst(self):
         try:
-            self.v_tsk_v, self.v_tsk_m, self.v_tsk_w, self.v_tsk_text = get_task_val()
+            self.v_tsk_v, self.v_tsk_m, self.v_tsk_w, self.v_tsk_text = ks.get_val_tsk_3_2()
             self.task_text.setText(
                 f'Зашифруй сообщение: {self.v_tsk_text}\nv = {self.v_tsk_v}\nw = {self.v_tsk_w}\nm = {self.v_tsk_m}')
             self.inp_tsk.clear()

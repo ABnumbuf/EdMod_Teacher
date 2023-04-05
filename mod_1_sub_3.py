@@ -4,14 +4,8 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtGui import *
 from PyQt5 import QtCore
 import random
-from util import read_text, get_random_message
+from util import read_text
 import My_ElGamal as elg
-
-def get_task_val():
-    y, p, g, x = elg.get_keys_ElGamal(10, 100)
-    m = get_random_message(6)
-    r, s = elg.ds_ElGamal(m, p, g, x)
-    return m, p, g, y, r, s
 
 class Window_1_3(QWidget):
 
@@ -77,7 +71,7 @@ class Window_1_3(QWidget):
         layout_tsk = QFormLayout()
         page_task.setLayout(layout_tsk)
         layout_tsk.addRow(QLabel('ѕроверка валидации Ё÷ѕ Ёль-√амал€ по заданным значени€м'))
-        self.v_tsk_m, self.v_tsk_p, self.v_tsk_g, self.v_tsk_y, self.v_tsk_r, self.v_tsk_s = get_task_val()
+        self.v_tsk_m, self.v_tsk_p, self.v_tsk_g, self.v_tsk_y, self.v_tsk_r, self.v_tsk_s = elg.get_val_tsk_1_3()
         self.w_tsk_text = QLabel(
             f'явл€еетс€ ли подпись правильной дл€: \np = {self.v_tsk_p}, g = {self.v_tsk_g}, y = {self.v_tsk_y}, \nm = {self.v_tsk_m}, \nr = {self.v_tsk_r}, s = {self.v_tsk_s}')
         self.w_tsk_text.setAlignment(QtCore.Qt.AlignCenter)
@@ -146,7 +140,7 @@ class Window_1_3(QWidget):
 
     def click_btn_tsk_rst(self):
         try:
-            self.v_tsk_m, self.v_tsk_p, self.v_tsk_g, self.v_tsk_y, self.v_tsk_r, self.v_tsk_s = get_task_val()
+            self.v_tsk_m, self.v_tsk_p, self.v_tsk_g, self.v_tsk_y, self.v_tsk_r, self.v_tsk_s = elg.get_val_tsk_1_3()
             self.w_tsk_text.setText(
                 f'явл€еетс€ ли подпись правильной дл€: \np = {self.v_tsk_p}, g = {self.v_tsk_g}, y = {self.v_tsk_y}, \nm = {self.v_tsk_m}, \nr = {self.v_tsk_r}, s = {self.v_tsk_s}')
             self.outp_tsk.setText(f"")
