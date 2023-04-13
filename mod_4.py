@@ -47,6 +47,7 @@ class Window_4(QWidget):
         self.w_inp_5 = QLineEdit()
         self.w_inp_6 = QLineEdit()
         self.w_inp_7 = QLineEdit()
+        self.w_outp = QTextBrowser()
         self.list_inp = [self.w_inp_1, 
                     self.w_inp_2,
                     self.w_inp_3,
@@ -54,9 +55,9 @@ class Window_4(QWidget):
                     self.w_inp_5,
                     self.w_inp_6,
                     self.w_inp_7]
-         
+        self.outp = ''
         
-        main_layout.addWidget(self.w_scrollArea,                             0, 0, 13, 1)
+        main_layout.addWidget(self.w_scrollArea,                             0, 0, 14, 1)
         main_layout.addWidget(QLabel("ЭЦП по схеме Эль-Гамаля"),             1, 1, 1, 1, alignment=QtCore.Qt.AlignHCenter)
         main_layout.addWidget(self.w_chb_1_1,                                2, 1, 1, 1)
         main_layout.addWidget(self.w_chb_1_2,                                3, 1, 1, 1)
@@ -69,6 +70,7 @@ class Window_4(QWidget):
         main_layout.addWidget(self.w_chb_3_3,                               10, 1, 1, 1)
         main_layout.addWidget(self.w_btn_strt,                              11, 1, 1, 1)
         main_layout.addWidget(self.w_btn_fnsh,                              12, 1, 1, 1)
+        main_layout.addWidget(self.w_outp,                                  13, 1, 1, 1)
 
 
     def click_btn_strt(self):
@@ -158,21 +160,19 @@ class Window_4(QWidget):
         try:
             rght_ans = 0
             count = 1
+            self.outp2 = ''
             for i in range(len(self.test_plan)):
                 if self.test_plan[i]:
-                    self.outp += f"\nЗадача {count} - "
+                    self.outp2 += f"\nЗадача {count} - "
                     if str(self.list_inp[i].text()) == self.test_ans[i]:
-                        self.outp += "Верно"
+                        self.outp2 += "Верно"
                         rght_ans += 1
-                    else: self.outp += "Неверно"
+                    else: self.outp2 += "Неверно"
                     count += 1
-            self.outp += f"\nРезультат: {round(rght_ans/sum(1 for x in self.test_plan if x), 2)*100}%"
-            self.w_box_tst.deleteLater()
-            self.w_w_scroll = QWidget()
-            self.w_box_tst = QVBoxLayout()
-            self.w_box_tst.addWidget(QLabel(self.outp))
-            self.w_w_scroll.setLayout(self.w_box_tst)
-            self.w_scrollArea.setWidget(self.w_w_scroll)
+            self.outp2 += f"\nРезультат: {round(rght_ans/sum(1 for x in self.test_plan if x), 2)*100}%"
+            self.w_outp.setText(self.outp2)
+            self.outp += self.outp2
+            # self.w_scrollArea.setWidget(self.w_outp)
             self.update()
         except ValueError:
             self.update()

@@ -3,13 +3,13 @@
 from typing import Tuple, List
 from random import randint
 from math import gcd
-from util import binary_pow, get_prime_number_in_range, get_coprime_in_range, get_random_message
+from util import binary_pow, get_prime_number_in_range, get_coprime_in_range, get_random_message, modular_inv
 
 
 def my_hash(string: str, p: int) -> int:
     # Находит дайджест строки string
     #
-    sum = 1
+    sum = 0
     for pos in range(len(string)):
         sum = sum + ord(string[pos])
     return sum % p
@@ -50,8 +50,10 @@ def get_keys_ElGamal(A: int, B: int) -> Tuple[int, int, int, int]:
     #
     # Выбор простого числа p
     p = get_prime_number_in_range(A, B)
-    # Выбор целое число g - первообразный корень p
+    # Выбор целое число g - первообразный корень p, g < p
     g = get_primitive_root(p)
+    while g >=p:
+        g = get_primitive_root(p)
     # Выбор случайного целого числа x такого, что 1 < x < p-1
     x = get_prime_number_in_range(1, p - 1)
     # y = g^x (mod p)
@@ -63,10 +65,10 @@ def ds_ElGamal(m: str, p: int, g: int, x: int) -> Tuple[int, int]:
     # Создает ЦП Эль-Гамаля сообщения m
     #
     h = my_hash(m, p)
-    k = get_coprime_in_range(1, p - 1, p - 1)
+    k = get_coprime_in_range(2, p - 1, p - 1)
     r = binary_pow(g, k, p)
     u = binary_pow((h - x * r), 1, p - 1)
-    k_inv = 9 #modular_inv(k, p - 1)
+    k_inv = modular_inv(k, p - 1)
     s = binary_pow((u * k_inv), 1, p - 1)
     return r, s
 
@@ -78,13 +80,13 @@ def ds_ElGamal_outp(m: str, p: int, g: int, x: int) -> str:
     outp.append(f'Создание подписи <r, s> для: m = {m}, p = {p}, g = {g}, x = {x}\n')
     h = my_hash(m, p)
     outp.append(f'h = h(m) = h({m}) = {h}\n')
-    k = get_coprime_in_range(1, p - 1, p - 1)
+    k = get_coprime_in_range(2, p - 1, p - 1)
     outp.append(f'1 < k < p - 1 \n1 < k < {p-1} \nk = {k}\n')
     r = binary_pow(g, k, p)
     outp.append(f'r = g^k (mod p) = {g}^{k} (mod {p}) = {r}\n')
     u = binary_pow((h - x * r), 1, p - 1)
     outp.append(f'u = (h - x * r) (mod p-1) = ({h} - {x} * {r}) (mod {p-1}) = {u}\n')
-    k_inv = 9  # modular_inv(k, p - 1)
+    k_inv = modular_inv(k, p - 1)
     outp.append(f'k^-1 = {k_inv}\n')
     s = binary_pow((u * k_inv), 1, p - 1)
     outp.append(f's = k^-1 * u (mod p-1) = {k_inv} * {u} (mod {p-1}) = {s}\n')

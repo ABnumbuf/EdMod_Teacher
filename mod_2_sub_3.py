@@ -48,16 +48,13 @@ class Window_2_3(QWidget):
             v_lb = int(self.inp_lb.text())
             v_rb = int(self.inp_rb.text())
             self.inp_tests.clear()
-            if v_lb < v_rb:
-                
-                val = get_values(v_tests, v_lb, v_rb)
-                if (v_method == methods[0]):
-                    res = method_mean_execution_time(dis.coherence_method, val)
-                elif(v_method == methods[1]):
-                    res = method_mean_execution_time(dis.sylvester_pohlig_hellman_method, val)
-                outp = f"Метод: {v_method}\nКоличество тестов: {v_tests}\nДиапазон значений: [{v_lb}, {v_rb}]"
-                outp += f"\nВремя выполнения: {res} секунд"
-            else: raise
+            val = get_values(v_tests, v_lb, v_rb)
+            if (v_method == methods[0]):
+                res = method_mean_execution_time(dis.coherence_method, val)
+            elif(v_method == methods[1]):
+                res = method_mean_execution_time(dis.sylvester_pohlig_hellman_method, val)
+            outp = f"Метод: {v_method}\nКоличество тестов: {v_tests}\nДиапазон значений: [{v_lb}, {v_rb}]"
+            outp += f"\nВремя выполнения: {res} секунд"
             self.inp_lb.clear()
             self.inp_rb.clear()
             self.outp.setText(outp)
