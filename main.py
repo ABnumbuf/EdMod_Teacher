@@ -32,12 +32,21 @@ class MainWindow(QWidget):
         self.setWindowTitle('EdMod')
         self.setFixedSize(650, 250)
         self.setFont(QFont('Arial', 12))
-        main_layout = QGridLayout(self)
-        self.setLayout(main_layout)
+        self.main_layout = QGridLayout(self)
+        self.setLayout(self.main_layout)
         lb1 = QLabel("EdMod")
         # lb1.setStyleSheet('color: #FFCB69')
         lb2 = QLabel("Криптографические методы")
-        self.lb3 = QLabel("Выбери раздел")
+
+        self.lb6 = QLabel("")
+        self.lb4 = QLabel("Введите имя:")
+        self.inp_user_name = QLineEdit()
+        self.lb5 = QLabel("Введите пароль:")
+        self.inp_user_pasw = QLineEdit()
+        self.btn_log = QPushButton("Далее")
+        self.btn_log.clicked.connect(self.click_btn_log)
+
+        self.lb3 = QLabel("Выберите раздел")
         lb1.setFont(QFont('Arial', 50))
         lb1.setAlignment(QtCore.Qt.AlignHCenter)
         lb2.setAlignment(QtCore.Qt.AlignHCenter)
@@ -48,13 +57,69 @@ class MainWindow(QWidget):
         self.btn = QPushButton("Далее")
         self.btn.clicked.connect(self.click_btn)
         self.btn.setFixedSize(100, 26)
-        main_layout.addWidget(lb1, 0, 0, 1, 2)
-        main_layout.addWidget(lb2, 1, 0, 1, 2)
-        main_layout.addWidget(self.lb3, 2, 0, 1, 2)
-        main_layout.addWidget(self.cmb, 3, 0, QtCore.Qt.AlignBottom)
-        main_layout.addWidget(self.btn, 3, 1, QtCore.Qt.AlignBottom)
+        self.main_layout.addWidget(lb1, 0, 0, 1, 3)
+        self.main_layout.addWidget(lb2, 1, 0, 1, 3)
+
+        self.main_layout.addWidget(self.lb6, 2, 0)
+        self.main_layout.addWidget(self.lb4, 3, 0)
+        self.main_layout.addWidget(self.inp_user_name, 3, 1, QtCore.Qt.AlignBottom)
+        self.main_layout.addWidget(self.lb5, 4, 0)
+        self.main_layout.addWidget(self.inp_user_pasw, 4, 1, QtCore.Qt.AlignBottom)
+        self.main_layout.addWidget(self.btn_log, 4, 2, QtCore.Qt.AlignBottom)
 
 
+    def click_btn_log(self):
+        try:
+            user_name = self.inp_user_name.text()
+            user_pasw = self.inp_user_pasw.text()
+            if user_name and user_pasw:
+
+                import oracledb
+                import datetime
+
+                oracledb.init_oracle_client()
+
+                connection = oracledb.connect(
+                    user="edmod",
+                    password="edmod",
+                    host="192.168.92.60",
+                    port="49161",
+                    service_name="xe")
+
+                if connection: print(f"Successfully connected to Database: {datetime.datetime.now()}")
+
+                sql = f"SELECT user_name, user_pasw FROM USERS where user_name='{user_name}'"
+                cursor = connection.cursor()
+                cursor.execute(sql)
+                user = cursor.fetchall()
+
+                if not user:
+                    sql = f"insert into users(user_id, user_name) values(:1, :2)"
+                    with connection.cursor() as cursor:
+                        cursor.execute(sql, [0, user_name])
+                        print(f"Successfully created new user {user_name}: {datetime.datetime.now()}")
+                    connection.commit()
+                elif user[0][1]==user_pasw:
+                    print(f"Successfully logged {user_name}: {datetime.datetime.now()}")
+                    self.lb4.setParent(None)
+                    self.inp_user_name.setParent(None)
+                    self.lb5.setParent(None)
+                    self.inp_user_pasw.setParent(None)
+                    self.btn_log.setParent(None)
+                    self.main_layout.addWidget(self.lb3, 2, 0, 1, 3, QtCore.Qt.AlignBottom)
+                    self.main_layout.addWidget(self.cmb, 3, 0, 1, 2, QtCore.Qt.AlignBottom)
+                    self.main_layout.addWidget(self.btn, 3, 2, QtCore.Qt.AlignBottom)
+                else:
+                    self.lb6.setText(f'Неверный пароль')
+            self.lb6.setText(f'Введите значения')
+            self.update()
+
+
+
+        except ValueError:
+            print(f"ERROR")
+    
+    
     def click_btn(self):
         try:
             choosed = self.cmb.currentText()
@@ -94,6 +159,10 @@ class MainWindow(QWidget):
     
 
 
+
+    
+
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
 
@@ -110,8 +179,8 @@ if __name__ == '__main__':
     dark_palette.setColor(QtGui.QPalette.Highlight, QtGui.QColor(255, 203, 105))
     dark_palette.setColor(QtGui.QPalette.HighlightedText, QtGui.QColor(86, 69, 57))
 
-    # app.setPalette(dark_palette)
+    #app.setPalette(dark_palette)
 
     window = MainWindow()
     window.show()
-    app.exec()
+    sys.exit(app.exec_())
