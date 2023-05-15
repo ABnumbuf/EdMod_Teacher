@@ -21,7 +21,7 @@ list_mod = ['Генерация ключей'
 
 class Window_4(QWidget):
 
-    def __init__(self, *args, **kwargs):
+    def __init__(self, user_name, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setWindowTitle('Тестирование')
         self.setFixedSize(900, 700)
@@ -57,7 +57,8 @@ class Window_4(QWidget):
                     self.w_inp_7]
         self.outp = ''
         
-        main_layout.addWidget(self.w_scrollArea,                             0, 0, 14, 1)
+        main_layout.addWidget(QLabel(user_name),                             0, 0, 1, 1)
+        main_layout.addWidget(self.w_scrollArea,                             1, 0, 13, 1)
         main_layout.addWidget(QLabel("ЭЦП по схеме Эль-Гамаля"),             1, 1, 1, 1, alignment=QtCore.Qt.AlignHCenter)
         main_layout.addWidget(self.w_chb_1_1,                                2, 1, 1, 1)
         main_layout.addWidget(self.w_chb_1_2,                                3, 1, 1, 1)
@@ -181,6 +182,6 @@ class Window_4(QWidget):
 
 
 
-def win_4(w):
-    w.window = Window_4()
+def win_4(w, user_name):
+    w.window = Window_4(user_name=user_name)
     w.window.show()
