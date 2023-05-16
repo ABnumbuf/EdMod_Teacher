@@ -96,7 +96,7 @@ class MainWindow(QWidget):
             user_pasw = self.inp_user_pasw.text()
             if self.user_name and user_pasw:
 
-                sql = f"SELECT user_name, user_pasw FROM USERS where user_name='{self.user_name}'"
+                sql = f"SELECT user_name FROM USERS where user_name='{self.user_name}'"
                 cursor = self.connection.cursor()
                 cursor.execute(sql)
                 user = cursor.fetchall()
