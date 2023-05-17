@@ -12,7 +12,7 @@ class Window_3_3(QWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setWindowTitle('Рюкзачная криптосистема: Алгоритм дешифрования')
-        self.setFixedSize(700, 800)
+        self.setFixedSize(760, 800)
         main_layout = QGridLayout(self)
         self.setLayout(main_layout)
         tab = QTabWidget(self)
@@ -32,20 +32,17 @@ class Window_3_3(QWidget):
         page_example = QWidget(self)
         layout_ex = QFormLayout()
         page_example.setLayout(layout_ex)
-        layout_ex.addRow(QLabel(
-            f'Расшифрование сообщения по алгоритму рюкзачной криптосистемы'))
-        layout_ex.addRow(QLabel('Введи значения:'))
+        self.outp_ex = QTextBrowser()
         self.inp_ex_w = QLineEdit()
         self.inp_ex_v = QLineEdit()
         self.inp_ex_m = QLineEdit()
         self.inp_ex_crypt = QLineEdit()
         btn_ex = QPushButton("Решить")
         btn_ex.clicked.connect(self.click_btn_ex)
-        self.outp_ex = QTextBrowser()
-        self.inp_ex_w.setFixedSize(620, 20)
-        self.inp_ex_v.setFixedSize(620, 20)
-        self.inp_ex_m.setFixedSize(620, 20)
-        self.inp_ex_crypt.setFixedSize(610, 20)
+
+        layout_ex.addRow(QLabel(
+            f'Расшифрование сообщения по алгоритму рюкзачной криптосистемы'))
+        layout_ex.addRow(QLabel('Введи значения:'))
         layout_ex.addRow(QLabel('v ='), self.inp_ex_v)
         layout_ex.addRow(QLabel('w ='), self.inp_ex_w)
         layout_ex.addRow(QLabel('m ='), self.inp_ex_m)
@@ -58,7 +55,7 @@ class Window_3_3(QWidget):
         layout_tsk = QFormLayout()
         page_task.setLayout(layout_tsk)
         layout_tsk.addRow(QLabel('Проверка дешифрования сообщения по алгоритму рюкзачной криптосистемы'))
-        self.v_tsk_w, self.v_tsk_m, self.v_tsk_v, self.v_tsk_crypt = ks.get_val_tsk_3_3()
+        self.v_tsk_v, self.v_tsk_m, self.v_tsk_w, self.v_tsk_crypt = ks.get_val_tsk_3_3()
         self.task_text = QLabel(
             f'Расшифруй сообщение: {self.v_tsk_crypt}\nv = {self.v_tsk_v}\nw = {self.v_tsk_w}\nm = {self.v_tsk_m}')
         self.task_text.setAlignment(QtCore.Qt.AlignCenter)
@@ -69,6 +66,7 @@ class Window_3_3(QWidget):
         self.outp_tsk = QTextBrowser()
         btn_tsk_chk.clicked.connect(self.click_btn_tsk_chk)
         btn_tsk_rst.clicked.connect(self.click_btn_tsk_rst)
+
         layout_tsk.addRow(self.task_text)
         layout_tsk.addRow(QLabel('Ввведи значение:'), self.inp_tsk)
         layout_tsk.addRow(btn_tsk_chk)
@@ -76,9 +74,9 @@ class Window_3_3(QWidget):
         layout_tsk.addRow(QLabel('Результат:'))
         layout_tsk.addRow(self.outp_tsk)
 
-        tab.addTab(page_text, 'Теория')
+        tab.addTab(page_text,    'Теория')
         tab.addTab(page_example, 'Примеры')
-        tab.addTab(page_task, 'Задачи')
+        tab.addTab(page_task,    'Задачи')
         
         main_layout.addWidget(tab, 0, 0, 2, 1)
 

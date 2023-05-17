@@ -132,7 +132,7 @@ def sylvester_pohlig_hellman_method_output(
     output2.append(f'h = h(n) = h({n}) = {ord_pa}\n')
     # Находим p_i^alpha_i
     factors = factorize(ord_pa)
-    factors.sort()
+    # factors.sort()
     output2.append(f'Раскладываем h = {ord_pa} на множители\n')
     output2.append(f'{ord_pa}  = {factors}\n')
     # Находим mu_i = ord(a, p) / p_i^alpha_i
@@ -144,6 +144,9 @@ def sylvester_pohlig_hellman_method_output(
     # Находим x_i
     x = [coherence_method(binary_pow(a, mu_i, n),
                           binary_pow(b, mu_i, n), n) for mu_i in mu]
+    # Если метод согласования не дал решение, то возвращаем None
+    if None in x:
+        return None
     for j in mu:
         output2.append(
             f'x_{mu.index(j)} = log{binary_pow(a, j, n)} ({binary_pow(b, j, n)}) = {x[mu.index(j)]}\n')

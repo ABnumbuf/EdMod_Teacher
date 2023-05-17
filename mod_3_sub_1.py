@@ -12,7 +12,7 @@ class Window_3_1(QWidget):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.setWindowTitle('Рюкзачная криптосистема: Задача о рюкзаке')
-        self.setFixedSize(700, 800)
+        self.setFixedSize(760, 800)
         main_layout = QGridLayout(self)
         self.setLayout(main_layout)
         tab = QTabWidget(self)
@@ -40,8 +40,7 @@ class Window_3_1(QWidget):
         btn_ex = QPushButton("Решить")
         btn_ex.clicked.connect(self.click_btn_ex)
         self.outp_ex = QTextBrowser()
-        self.inp_ex_w.setFixedSize(620, 20)
-        self.inp_ex_s.setFixedSize(620, 20)
+
         layout_ex.addRow(QLabel('w = '), self.inp_ex_w)
         layout_ex.addRow(QLabel('s = '), self.inp_ex_s)
         layout_ex.addRow(btn_ex)
@@ -63,6 +62,7 @@ class Window_3_1(QWidget):
         self.outp_tsk = QTextBrowser()
         btn_tsk_chk.clicked.connect(self.click_btn_tsk_chk)
         btn_tsk_rst.clicked.connect(self.click_btn_tsk_rst)
+
         layout_tsk.addRow(self.task_text)
         layout_tsk.addRow(QLabel('Ввведи ответ:'), self.inp_tsk)
         layout_tsk.addRow(btn_tsk_chk)
@@ -70,9 +70,9 @@ class Window_3_1(QWidget):
         layout_tsk.addRow(QLabel('Результат:'))
         layout_tsk.addRow(self.outp_tsk)
 
-        tab.addTab(page_text, 'Теория')
+        tab.addTab(page_text,    'Теория')
         tab.addTab(page_example, 'Примеры')
-        tab.addTab(page_task, 'Задачи')
+        tab.addTab(page_task,    'Задачи')
         
         main_layout.addWidget(tab, 0, 0, 2, 1)
 

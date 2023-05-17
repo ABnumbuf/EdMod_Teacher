@@ -26,7 +26,7 @@ class Window_4(QWidget):
         super().__init__(*args, **kwargs)
         self.user_name = user_name
         self.setWindowTitle('Тестирование')
-        self.setFixedSize(900, 700)
+        self.setFixedSize(1000, 770)
         self.setFont(QFont('Arial', 12))
         main_layout = QGridLayout(self)
         self.setLayout(main_layout)
@@ -43,6 +43,8 @@ class Window_4(QWidget):
         self.w_btn_fnsh.clicked.connect(self.click_btn_fnsh)
         self.w_btn_stat = QPushButton("Статистика")
         self.w_btn_stat.clicked.connect(self.click_btn_stat)
+        self.w_btn_cln = QPushButton("Сброс статистики")
+        self.w_btn_cln.clicked.connect(self.click_btn_cln)
         self.w_scrollArea = QScrollArea()
         self.w_inp_1 = QLineEdit()
         self.w_inp_2 = QLineEdit()
@@ -61,22 +63,23 @@ class Window_4(QWidget):
                     self.w_inp_7]
         self.outp = ''
         
-        main_layout.addWidget(QLabel(self.user_name),                             0, 0, 1, 1)
+        main_layout.addWidget(QLabel(self.user_name),                        0, 0, 1, 1)
         main_layout.addWidget(self.w_scrollArea,                             1, 0, 14, 1)
-        main_layout.addWidget(QLabel("ЭЦП по схеме Эль-Гамаля"),             1, 1, 1, 1, alignment=QtCore.Qt.AlignHCenter)
-        main_layout.addWidget(self.w_chb_1_1,                                2, 1, 1, 1)
-        main_layout.addWidget(self.w_chb_1_2,                                3, 1, 1, 1)
-        main_layout.addWidget(self.w_chb_1_3,                                4, 1, 1, 1)
-        main_layout.addWidget(QLabel("Задача дискретного логарифмирования"), 5, 1, 1, 1, alignment=QtCore.Qt.AlignHCenter)
-        main_layout.addWidget(self.w_chb_2,                                  6, 1, 1, 1)
-        main_layout.addWidget(QLabel("Рюкзачная криптосистема"),             7, 1, 1, 1, alignment=QtCore.Qt.AlignHCenter)
-        main_layout.addWidget(self.w_chb_3_1,                                8, 1, 1, 1)
-        main_layout.addWidget(self.w_chb_3_2,                                9, 1, 1, 1)
-        main_layout.addWidget(self.w_chb_3_3,                               10, 1, 1, 1)
+        main_layout.addWidget(QLabel("ЭЦП по схеме Эль-Гамаля"),             1, 1, 1, 2, alignment=QtCore.Qt.AlignHCenter)
+        main_layout.addWidget(self.w_chb_1_1,                                2, 1, 1, 2)
+        main_layout.addWidget(self.w_chb_1_2,                                3, 1, 1, 2)
+        main_layout.addWidget(self.w_chb_1_3,                                4, 1, 1, 2)
+        main_layout.addWidget(QLabel("Задача дискретного логарифмирования"), 5, 1, 1, 2, alignment=QtCore.Qt.AlignHCenter)
+        main_layout.addWidget(self.w_chb_2,                                  6, 1, 1, 2)
+        main_layout.addWidget(QLabel("Рюкзачная криптосистема"),             7, 1, 1, 2, alignment=QtCore.Qt.AlignHCenter)
+        main_layout.addWidget(self.w_chb_3_1,                                8, 1, 1, 2)
+        main_layout.addWidget(self.w_chb_3_2,                                9, 1, 1, 2)
+        main_layout.addWidget(self.w_chb_3_3,                               10, 1, 1, 2)
         main_layout.addWidget(self.w_btn_strt,                              11, 1, 1, 1)
-        main_layout.addWidget(self.w_btn_fnsh,                              12, 1, 1, 1)
-        main_layout.addWidget(self.w_btn_stat,                              13, 1, 1, 1)
-        main_layout.addWidget(self.w_outp,                                  14, 1, 1, 1)
+        main_layout.addWidget(self.w_btn_fnsh,                              11, 2, 1, 1)
+        main_layout.addWidget(self.w_btn_stat,                              12, 1, 1, 1)
+        main_layout.addWidget(self.w_btn_cln,                               12, 2, 1, 1)
+        main_layout.addWidget(self.w_outp,                                  13, 1, 1, 2)
         self.count = 0
         try:
 
@@ -280,8 +283,8 @@ class Window_4(QWidget):
             for row in cursor.execute(sql):
                 number_of_mod = 0
                 for j in range(0, len(row), 2):
-                    if row[j+1]:
-                        output_stat += f'{list_mod[number_of_mod]}: {row[j+1]}/{row[j+2]} - {row[j+2]*100 // row[j+1]}%\n'
+                    if row[j]:
+                        output_stat += f'{list_mod[number_of_mod]}: {row[j+1]}/{row[j]} - {row[j+1]*100 // row[j]}%\n'
                     else:
                         output_stat += f'{list_mod[number_of_mod]}: 0/0 - 0%\n'
                     number_of_mod += 1
@@ -291,7 +294,38 @@ class Window_4(QWidget):
         except ValueError:
             self.update()
             return 0
+        
+        
+    def click_btn_cln(self):
+        try:
 
+            oracledb.init_oracle_client()
+
+            self.connection = oracledb.connect(
+                user="edmod",
+                password="edmod",
+                host="192.168.92.60",
+                port="49161",
+                service_name="xe")
+
+            if self.connection: print(f"Successfully connected to Database: {datetime.datetime.now()}")
+            else: print(f"Error with connect to Database: {datetime.datetime.now()}")
+
+            sql = f"DELETE FROM results WHERE user_id = {self.user_id}"
+            cursor = self.connection.cursor()
+
+            cursor.execute(sql)
+
+            if 1: print(f"Successfully delete rows for user {self.user_name}: {datetime.datetime.now()}")
+            else: print(f"Error with deleting rows for user {self.user_name}: {datetime.datetime.now()}")
+
+            self.connection.commit()
+
+            self.w_outp.setText('Статистика сброшена')
+            self.update()
+        except ValueError:
+            self.update()
+            return 0
 
 
 
