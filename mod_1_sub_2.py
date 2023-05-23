@@ -76,9 +76,9 @@ class Window_1_2(QWidget):
         layout_tsk.addRow(self.outp_tsk)
 
         # add pane to the tab widget
-        tab.addTab(page_text, 'Теория')
+        tab.addTab(page_text,    'Теория')
         tab.addTab(page_example, 'Примеры')
-        tab.addTab(page_task, 'Задачи')
+        tab.addTab(page_task,    'Задачи')
         
         main_layout.addWidget(tab, 0, 0, 2, 1)
 

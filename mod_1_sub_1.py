@@ -188,9 +188,9 @@ class Window_1_1(QWidget):
         tab_tsk.addTab(page_tsk_3, '3')
         layout_tsk.addWidget(tab_tsk, 0, 0, 2, 1)
 
-        tab.addTab(page_text, 'Теория')
+        tab.addTab(page_text,    'Теория')
         tab.addTab(page_example, 'Примеры')
-        tab.addTab(page_task, 'Задачи')
+        tab.addTab(page_task,    'Задачи')
         
         main_layout.addWidget(tab, 0, 0, 2, 1)
 

@@ -24,7 +24,9 @@ class Window_4(QWidget):
 
     def __init__(self, user_name, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
         self.user_name = user_name
+
         self.setWindowTitle('Тестирование')
         self.setFixedSize(1000, 770)
         self.setFont(QFont('Arial', 12))
@@ -41,10 +43,9 @@ class Window_4(QWidget):
         self.w_btn_strt.clicked.connect(self.click_btn_strt)
         self.w_btn_fnsh = QPushButton("Завершить")
         self.w_btn_fnsh.clicked.connect(self.click_btn_fnsh)
-        self.w_btn_stat = QPushButton("Статистика")
-        self.w_btn_stat.clicked.connect(self.click_btn_stat)
-        self.w_btn_cln = QPushButton("Сброс статистики")
-        self.w_btn_cln.clicked.connect(self.click_btn_cln)
+        self.w_btn_my_stat = QPushButton("Моя статистика")
+        self.w_btn_my_stat.clicked.connect(self.click_btn_my_stat)
+
         self.w_scrollArea = QScrollArea()
         self.w_inp_1 = QLineEdit()
         self.w_inp_2 = QLineEdit()
@@ -63,7 +64,7 @@ class Window_4(QWidget):
                     self.w_inp_7]
         self.outp = ''
         
-        main_layout.addWidget(QLabel(self.user_name),                        0, 0, 1, 1)
+        main_layout.addWidget(QLabel(f'Преподаватель - {self.user_name}'),0, 0, 1, 1)
         main_layout.addWidget(self.w_scrollArea,                             1, 0, 14, 1)
         main_layout.addWidget(QLabel("ЭЦП по схеме Эль-Гамаля"),             1, 1, 1, 2, alignment=QtCore.Qt.AlignHCenter)
         main_layout.addWidget(self.w_chb_1_1,                                2, 1, 1, 2)
@@ -77,8 +78,8 @@ class Window_4(QWidget):
         main_layout.addWidget(self.w_chb_3_3,                               10, 1, 1, 2)
         main_layout.addWidget(self.w_btn_strt,                              11, 1, 1, 1)
         main_layout.addWidget(self.w_btn_fnsh,                              11, 2, 1, 1)
-        main_layout.addWidget(self.w_btn_stat,                              12, 1, 1, 1)
-        main_layout.addWidget(self.w_btn_cln,                               12, 2, 1, 1)
+        main_layout.addWidget(self.w_btn_my_stat,                              12, 1, 1, 1)
+
         main_layout.addWidget(self.w_outp,                                  13, 1, 1, 2)
         self.count = 0
         try:
@@ -254,7 +255,7 @@ class Window_4(QWidget):
         with open(f'statistics_{self.user_name}.txt', mode="a", encoding="windows-1251") as f:
                 f.write(f"\n{str(datetime.datetime.now())}{self.outp}")
 
-    def click_btn_stat(self):
+    def click_btn_my_stat(self):
         try:
             output_stat = ''
 
@@ -294,39 +295,6 @@ class Window_4(QWidget):
         except ValueError:
             self.update()
             return 0
-        
-        
-    def click_btn_cln(self):
-        try:
-
-            oracledb.init_oracle_client()
-
-            self.connection = oracledb.connect(
-                user="edmod",
-                password="edmod",
-                host="192.168.92.60",
-                port="49161",
-                service_name="xe")
-
-            if self.connection: print(f"Successfully connected to Database: {datetime.datetime.now()}")
-            else: print(f"Error with connect to Database: {datetime.datetime.now()}")
-
-            sql = f"DELETE FROM results WHERE user_id = {self.user_id}"
-            cursor = self.connection.cursor()
-
-            cursor.execute(sql)
-
-            if 1: print(f"Successfully delete rows for user {self.user_name}: {datetime.datetime.now()}")
-            else: print(f"Error with deleting rows for user {self.user_name}: {datetime.datetime.now()}")
-
-            self.connection.commit()
-
-            self.w_outp.setText('Статистика сброшена')
-            self.update()
-        except ValueError:
-            self.update()
-            return 0
-
 
 
 def win_4(w, user_name):
