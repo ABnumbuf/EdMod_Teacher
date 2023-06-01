@@ -29,7 +29,7 @@ roles = ['Студент', 'Преподаватель']
 list_mod_4_test = ['Генерация ключей'
             ,'Создание подписи'
             ,'Валидация подписи'
-            ,'ЗДЛ'
+            ,'Задача ДЛ'
             ,'Задача о рюкзаке'
             ,'Алгоритм шифрования'
             ,'Алгоритм дешифрования']
@@ -91,16 +91,13 @@ class MainWindow(QWidget):
 
                 try:
                     oracledb.init_oracle_client()
-
                     self.connection = oracledb.connect(
                                         user="teacher",
                                         password="teacher",
                                         host="192.168.92.60",
                                         port="49161",
                                         service_name="xe")
-
-                    if self.connection: print(f"Successfully connected to Database: {datetime.datetime.now()}")
-                    else: print(f"Error with connect to Database: {datetime.datetime.now()}")
+                    print(f"Successfully connected to Database: {datetime.datetime.now()}") if self.connection else print(f"Error with connect to Database: {datetime.datetime.now()}")
                 except ValueError:
                     print(f"ERROR")
                     return 0
@@ -135,18 +132,14 @@ class MainWindow(QWidget):
 
             if self.user_name and self.user_pasw:
                 try:
-
                     oracledb.init_oracle_client()
-
                     self.connection = oracledb.connect(
                                         user="teacher",
                                         password="teacher",
                                         host="192.168.92.60",
                                         port="49161",
                                         service_name="xe")
-
-                    if self.connection: print(f"Successfully connected to Database: {datetime.datetime.now()}")
-                    else: print(f"Error with connect to Database: {datetime.datetime.now()}")
+                    print(f"Successfully connected to Database: {datetime.datetime.now()}") if self.connection else print(f"Error with connect to Database: {datetime.datetime.now()}")
                 except ValueError:
                     print(f"ERROR")
                     return 0
@@ -157,8 +150,7 @@ class MainWindow(QWidget):
                 cursor.execute(sql)
                 user = cursor.fetchall()
 
-                if not user:
-                    self.w_lb_log_msg.setText(f'Пользователь не найден')
+                if not user: self.w_lb_log_msg.setText(f'Пользователь не найден')
                 elif user[0][1] == self.user_pasw:
                     print(f"Successfully logged {self.user_name}: {datetime.datetime.now()}")
 
@@ -218,7 +210,7 @@ class MainWindow(QWidget):
                     self.btn_reg = QPushButton("Создать")
                     self.btn_reg.clicked.connect(self.click_btn_reg)
 
-                    self.setFixedSize(800, 350)
+                    self.setFixedSize(1150, 350)
 
                     self.layout_reg.addWidget(self.w_lb_log_info_2,  0, 0, 1, 3, QtCore.Qt.AlignRight)
                     self.layout_reg.addWidget(self.w_lb_EdMod_2,     1, 0, 1, 3, QtCore.Qt.AlignBottom)
@@ -243,15 +235,15 @@ class MainWindow(QWidget):
                     self.page_stat_scrll.setWidget(self.w_lb_otp_stat)
 
                     self.w_lb_time_updt = QLabel('')
-                    table_header = "<table border='1' cellspacing='0'>\
-                            <tr><td rowspan='2' align='center'>Студент</td>"
-                    for mod in list_mod_4_test: 
-                        table_header += f"<td colspan='3' align='center'>{mod}</td>"
-                    table_header += "</tr><tr>"
-                    for mod in list_mod_4_test: 
-                        table_header += f"<td align='center'>П</td><td align='center'>В</td><td align='center'>%</td>"
-                    table_header += "</tr>"
-                    self.w_lb_table_header = QLabel(table_header)
+                    # table_header = "<table border='1' cellspacing='0'>\
+                    #         <tr><td rowspan='2' align='center'>Имя</td>"
+                    # for mod in list_mod_4_test: 
+                    #     table_header += f"<td colspan='3' align='center'>{mod}</td>"
+                    # table_header += "</tr><tr>"
+                    # for mod in list_mod_4_test: 
+                    #     table_header += f"<td align='center'>П</td><td align='center'>В</td><td align='center'>%</td>"
+                    # table_header += "</tr>"
+                    # self.w_lb_table_header = QLabel(table_header)
                     self.btn_updt = QPushButton("Обновить")
                     self.btn_updt.clicked.connect(self.click_btn_updt)
                     
@@ -355,36 +347,38 @@ class MainWindow(QWidget):
         try:
             try:
                 oracledb.init_oracle_client()
-
                 self.connection = oracledb.connect(
                                         user="teacher",
                                         password="teacher",
                                         host="192.168.92.60",
                                         port="49161",
                                         service_name="xe")
-
-                if self.connection: print(f"Successfully connected to Database: {datetime.datetime.now()}")
-                else: print(f"Error with connect to Database: {datetime.datetime.now()}")
+                cursor = self.connection.cursor()
+                print(f"Successfully connected to Database: {datetime.datetime.now()}") if self.connection else print(f"Error with connect to Database: {datetime.datetime.now()}")
             except ValueError:
                 print(f"ERROR")
                 return 0
 
-            sql = f"select u.user_name, \
-                            ur.m_11, ur.ans_11, \
-                            ur.m_12, ur.ans_12, \
-                            ur.m_13, ur.ans_13, \
-                            ur.m_2, ur.ans_2, \
-                            ur.m_31, ur.ans_31, \
-                            ur.m_32, ur.ans_32, \
-                            ur.m_33, ur.ans_33 \
-                    from edmod.user_results ur JOIN edmod.USERS u ON ur.user_id = u.user_id"
+            print(f"Successfully connected to Database: {datetime.datetime.now()}") if self.connection else print(f"Error with connect to Database: {datetime.datetime.now()}")
+            sql_refresh_mat_view = "begin DBMS_MVIEW.REFRESH('EDMOD.USER_RESULTS');end;"
+            print(f"Successfully refresh mat view: {datetime.datetime.now()}") if cursor.execute(sql_refresh_mat_view) else print(f"Error to refresh mat view: {datetime.datetime.now()}")
+            
+            sql_get_data = f"select u.user_name, \
+                                    ur.m_11, ur.ans_11, \
+                                    ur.m_12, ur.ans_12, \
+                                    ur.m_13, ur.ans_13, \
+                                    ur.m_2, ur.ans_2, \
+                                    ur.m_31, ur.ans_31, \
+                                    ur.m_32, ur.ans_32, \
+                                    ur.m_33, ur.ans_33 \
+                            from edmod.user_results ur JOIN edmod.USERS u ON ur.user_id = u.user_id"
             cursor = self.connection.cursor()
-            cursor.execute(sql)
+            cursor.execute(sql_get_data)
             results = cursor.fetchall()
             self.w_lb_time_updt.setText(f'{datetime.datetime.now()}')
             print(results)
             str_outp_res = "<table border='1' cellspacing='0' style='weight:100%'>\
-                            <tr><td rowspan='2' align='center'>Студент</td>"
+                            <tr><td rowspan='2' align='center'>Имя</td>"
             for mod in list_mod_4_test: 
                 str_outp_res+= f"<td colspan='3' align='center'>{mod}</td>"
             str_outp_res += "</tr><tr>"

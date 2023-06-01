@@ -268,9 +268,8 @@ class Window_4(QWidget):
                 port="49161",
                 service_name="xe")
 
-            if self.connection: print(f"Successfully connected to Database: {datetime.datetime.now()}")
-            else: print(f"Error with connect to Database: {datetime.datetime.now()}")
-
+            print(f"Successfully connected to Database: {datetime.datetime.now()}") if self.connection else print(f"Error with connect to Database: {datetime.datetime.now()}")
+            
             sql = f"SELECT sum(mod_1_sub_1), sum(answer_mod_1_sub_1), \
                             sum(mod_1_sub_2), sum(answer_mod_1_sub_2), \
                             sum(mod_1_sub_3), sum(answer_mod_1_sub_3),\
@@ -278,7 +277,8 @@ class Window_4(QWidget):
                             sum(mod_3_sub_1), sum(answer_mod_3_sub_1), \
                             sum(mod_3_sub_2), sum(answer_mod_3_sub_2), \
                             sum(mod_3_sub_3), sum(answer_mod_3_sub_3)\
-                    FROM results R JOIN USERS u ON R.user_id = u.user_id where r.user_id = {self.user_id}"
+                    FROM EDMOD.results R JOIN EDMOD.USERS u ON R.user_id = u.user_id where r.user_id = {self.user_id}"
+            
             cursor = self.connection.cursor()
 
             for row in cursor.execute(sql):
